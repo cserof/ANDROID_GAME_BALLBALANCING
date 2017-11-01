@@ -2,6 +2,8 @@ package nik.uniobuda.hu.balancingball.model;
 
 import java.util.ArrayList;
 
+import nik.uniobuda.hu.balancingball.util.Util;
+
 /**
  * Created by cserof on 10/23/2017.
  */
@@ -41,10 +43,10 @@ public class Ball {
         return points;
     }
 
-    public void setRotationMatrix(double[][] rotationMatrix) {
+    public void calcRotationMatrix(double[][] rotationMatrix) {
         this.rotationMatrix = Util.matrixMultiplication(this.rotationMatrix,rotationMatrix);
         for (Point3D point : points) {
-            point.setRotationMatrix(this.rotationMatrix);
+            point.calcRotatedCoordinates(this.rotationMatrix);
         }
     }
 
@@ -57,7 +59,7 @@ public class Ball {
         double[][] m2 = Util.calculateRotationMatrix(0,- directionOfMove.getDistance()/radius, 0);
         double[][] m3 = Util.calculateRotationMatrix(0, 0, -directionOfMove.getDirection());
 
-        setRotationMatrix(Util.matrixMultiplication(Util.matrixMultiplication(m3, m2), m1));
+        calcRotationMatrix(Util.matrixMultiplication(Util.matrixMultiplication(m3, m2), m1));
     }
 
     private void createPoints()

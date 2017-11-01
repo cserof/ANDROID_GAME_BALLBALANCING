@@ -1,5 +1,7 @@
 package nik.uniobuda.hu.balancingball.model;
 
+import nik.uniobuda.hu.balancingball.util.Util;
+
 /**
  * Created by cserof on 10/23/2017.
  */
@@ -14,14 +16,10 @@ public class Point3D {
     private double displayedY;
     private double displayedZ;
 
-    private double[][] rotationMatrix;
-
     public Point3D(double x, double y, double z) {
         this.initialX = x;
         this.initialY = y;
         this.initialZ = z;
-
-        rotationMatrix = Util.calculateRotationMatrix(0, 0, 0);
     }
 
     public double getDisplayedX() {
@@ -36,12 +34,7 @@ public class Point3D {
         return displayedZ;
     }
 
-    public void setRotationMatrix(double[][] rotationMatrix) {
-        this.rotationMatrix = rotationMatrix;
-        calcRotatedCoordinates();
-    }
-
-    private void calcRotatedCoordinates() {
+    public void calcRotatedCoordinates(double[][] rotationMatrix) {
         double[][] m = {
                 {initialX,initialY,initialZ}
         };

@@ -1,4 +1,4 @@
-package nik.uniobuda.hu.balancingball.model;
+package nik.uniobuda.hu.balancingball.util;
 
 /**
  * Created by cserof on 10/23/2017.
