@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import nik.uniobuda.hu.balancingball.model.Vector2D;
+import nik.uniobuda.hu.balancingball.physics.Physics;
+
 public class MainActivity extends AppCompatActivity {
 
     private SensorManager mSensorManager;
@@ -87,7 +90,9 @@ public class MainActivity extends AppCompatActivity {
         double pitch = orientation[1];
         double roll = orientation[2];
 
-        textViewX.setText("azimut: " + Math.round(180*azimut/Math.PI));
+        Vector2D v = Physics.getAccelerationVector(pitch, roll);
+
+        textViewX.setText("tilt vector: " + v.getX() + ", " + v.getY() + "  : " + Math.toDegrees(v.getDirection()));
         textViewY.setText("pitch: " + Math.round(180*pitch/Math.PI));
         textViewZ.setText("roll: " + Math.round(180*roll/Math.PI));
 

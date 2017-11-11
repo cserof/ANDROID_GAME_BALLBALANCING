@@ -16,12 +16,16 @@ public class Ball {
     private double positionX;
     private double positionY;
 
+    private Vector2D velocity;
+
     private double[][] rotationMatrix;
 
     public Ball(int startX, int startY) {
 
         positionX = startX;
         positionY = startY;
+
+        velocity = new Vector2D(0, 0);
 
         createPoints();
         rotationMatrix = Util.calculateRotationMatrix(0, 0, 0);
@@ -50,14 +54,20 @@ public class Ball {
         }
     }
 
-    public void roll(Vector2D directionOfMove) {
 
-        positionX += directionOfMove.getX();
-        positionY += directionOfMove.getY();
+    public void accelerate(Vector2D accelerationVector) {
+        velocity.add(accelerationVector);
+        roll(velocity);
+    }
 
-        double[][] m1 = Util.calculateRotationMatrix(0, 0, directionOfMove.getDirection());
-        double[][] m2 = Util.calculateRotationMatrix(0,- directionOfMove.getDistance()/radius, 0);
-        double[][] m3 = Util.calculateRotationMatrix(0, 0, -directionOfMove.getDirection());
+    private void roll(Vector2D velocity) {
+
+        positionX += velocity.getX();
+        positionY += velocity.getY();
+
+        double[][] m1 = Util.calculateRotationMatrix(0, 0, velocity.getDirection());
+        double[][] m2 = Util.calculateRotationMatrix(0,- velocity.getDistance()/radius, 0);
+        double[][] m3 = Util.calculateRotationMatrix(0, 0, -velocity.getDirection());
 
         calcRotationMatrix(Util.matrixMultiplication(Util.matrixMultiplication(m3, m2), m1));
     }

@@ -42,4 +42,10 @@ public class Vector2D {
     public double getDistance() {
         return Math.sqrt(x*x+y*y);
     }
+
+    public void add(Vector2D v) {
+        this.x = v.getX();
+        this.y = v.getY();
+    }
+
 }
