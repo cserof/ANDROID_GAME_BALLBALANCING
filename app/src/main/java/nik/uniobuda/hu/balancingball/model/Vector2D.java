@@ -44,8 +44,8 @@ public class Vector2D {
     }
 
     public void add(Vector2D v) {
-        this.x = v.getX();
-        this.y = v.getY();
+        this.x += v.getX();
+        this.y += v.getY();
     }
 
 }

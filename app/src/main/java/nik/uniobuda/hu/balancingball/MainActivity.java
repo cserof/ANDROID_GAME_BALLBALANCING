@@ -7,29 +7,33 @@ import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
-import nik.uniobuda.hu.balancingball.model.Vector2D;
+import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.physics.Physics;
 
 public class MainActivity extends AppCompatActivity {
 
-    /*private SensorManager mSensorManager;
+    private SensorManager mSensorManager;
 
-
+/*
     TextView textViewX;
     TextView textViewY;
     TextView textViewZ;
     */
 
     GameView gameView;
+    Ball ball;
+
+    final static int startX = 0;
+    final static int startY = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
 
-        gameView = new GameView(this);
+        ball = new Ball(startX, startY);
+        gameView = new GameView(this, ball);
         setContentView(gameView);
 
         /*
@@ -37,23 +41,23 @@ public class MainActivity extends AppCompatActivity {
         textViewY = (TextView) findViewById(R.id.y);
         textViewZ = (TextView) findViewById(R.id.z);
 
+        */
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         Log.e("BB", "OnCreate, sensor: " + mSensorManager.toString());
-        */
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         gameView.resume();
-        /*
+
         Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         Sensor magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         mSensorManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_UI);
         mSensorManager.registerListener(listener, magnetometer, SensorManager.SENSOR_DELAY_UI);
         Log.e("BB", "OnResume, acc: " + accelerometer.toString() + "magn: " + magnetometer.toString());
-        */
     }
 
     @Override
@@ -61,12 +65,10 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         gameView.pause();
 
-        /*
         mSensorManager.unregisterListener(listener);
         Log.e("BB", "onPause, leiratkozott mindenki");
-        */
     }
-/*
+
     private SensorEventListener listener = new SensorEventListener() {
 
         float[] mGravity;
@@ -86,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 if (success) {
                     float orientation[] = new float[3];
                     SensorManager.getOrientation(R, orientation);
-
-                    setTexts(orientation);
+                    calculateForceOnTheBall(orientation);
                 }
             }
         }
@@ -97,18 +98,17 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void setTexts(float[] orientation) {
-
+    private void calculateForceOnTheBall(float[] orientation) {
         double azimut = orientation[0];
         double pitch = orientation[1];
         double roll = orientation[2];
 
-        Vector2D v = Physics.getAccelerationVector(pitch, roll);
+        ball.setAcceleration(Physics.getAccelerationVector(-pitch, roll));
 
+        /*
         textViewX.setText("tilt vector: " + v.getX() + ", " + v.getY() + "  : " + Math.toDegrees(v.getDirection()));
         textViewY.setText("pitch: " + Math.round(180*pitch/Math.PI));
         textViewZ.setText("roll: " + Math.round(180*roll/Math.PI));
-
+        */
     }
-    */
 }

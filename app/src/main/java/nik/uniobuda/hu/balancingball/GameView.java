@@ -20,27 +20,27 @@ import nik.uniobuda.hu.balancingball.model.Vector2D;
  */
 
 public class GameView extends SurfaceView implements Runnable {
+
+    static final long targetFps = 25 ;
+    static final long gameCyclePeriod = 40;
+
     Thread gameThread = null;
     SurfaceHolder surfaceHolder;
     volatile boolean playing;
     Canvas canvas;
     Paint paint;
 
+    Ball ball;
+
     long fps;
     private long timeThisFrame;
 
-    Ball ball;
-
-    final static int startX = 0;
-    final static int startY = 0;
-
-
-    public GameView(Context context) {
+    public GameView(Context context, Ball ball) {
         super(context);
+
+        this.ball = ball;
         surfaceHolder = getHolder();
         paint = new Paint();
-
-        ball = new Ball(startX, startY);
         playing = true;
     }
 
@@ -53,6 +53,11 @@ public class GameView extends SurfaceView implements Runnable {
             update();
             draw();
             timeThisFrame = System.currentTimeMillis() - startFrameTime;
+            try {
+                Thread.sleep(gameCyclePeriod - timeThisFrame);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if (timeThisFrame > 0) {
                 fps = 1000 / timeThisFrame;
             }
@@ -91,13 +96,8 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void update() {
+        ball.accelerate();
         ball.roll();
-        if (ball.getPositionX()>1000) {
-            ball.accelerate(new Vector2D(-1, -1));
-        }
-        if (ball.getPositionX() < 100) {
-            ball.accelerate(new Vector2D(1, 1));
-        }
     }
 
     public void pause() {

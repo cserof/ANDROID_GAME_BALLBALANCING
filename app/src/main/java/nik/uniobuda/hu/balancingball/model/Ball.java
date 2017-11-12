@@ -17,6 +17,7 @@ public class Ball {
     private float positionY;
 
     private Vector2D velocity;
+    private Vector2D acceleration;
 
     private double[][] rotationMatrix;
 
@@ -26,6 +27,7 @@ public class Ball {
         positionY = startY;
 
         velocity = new Vector2D(1, 1);
+        acceleration = new Vector2D(0, 0);
 
         createPoints();
         rotationMatrix = Util.calculateRotationMatrix(0, 0, 0);
@@ -55,8 +57,8 @@ public class Ball {
     }
 
 
-    public void accelerate(Vector2D accelerationVector) {
-        velocity.add(accelerationVector);
+    public void accelerate() {
+        velocity.add(acceleration);
     }
 
     public void roll() {
@@ -79,5 +81,13 @@ public class Ball {
         points.add(new Point3D(0, radius, 0));
         points.add(new Point3D(0, 0, -radius));
         points.add(new Point3D(0, 0, radius));
+    }
+
+    public Vector2D getAcceleration() {
+        return acceleration;
+    }
+
+    public void setAcceleration(Vector2D acceleration) {
+        this.acceleration = acceleration;
     }
 }
