@@ -12,9 +12,9 @@ public class Point3D {
     private double initialY;
     private double initialZ;
 
-    private double displayedX;
-    private double displayedY;
-    private double displayedZ;
+    private float displayedX;
+    private float displayedY;
+    private float displayedZ;
 
     public Point3D(double x, double y, double z) {
         this.initialX = x;
@@ -22,15 +22,15 @@ public class Point3D {
         this.initialZ = z;
     }
 
-    public double getDisplayedX() {
+    public float getDisplayedX() {
         return displayedX;
     }
 
-    public double getDisplayedY() {
+    public float getDisplayedY() {
         return displayedY;
     }
 
-    public double getDisplayedZ() {
+    public float getDisplayedZ() {
         return displayedZ;
     }
 
@@ -40,8 +40,8 @@ public class Point3D {
         };
 
         double[][] n =  Util.matrixMultiplication(m, rotationMatrix);
-        displayedX = n[0][0];
-        displayedY = n[0][1];
-        displayedZ = n[0][2];
+        displayedX = (float) n[0][0];
+        displayedY = (float) n[0][1];
+        displayedZ = (float) n[0][2];
     }
 }

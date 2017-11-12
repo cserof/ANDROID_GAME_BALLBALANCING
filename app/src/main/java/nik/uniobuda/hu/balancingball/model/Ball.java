@@ -10,36 +10,36 @@ import nik.uniobuda.hu.balancingball.util.Util;
 
 public class Ball {
 
-    private static final double radius = 50;
+    private static final float radius = 50;
     private ArrayList<Point3D> points = new ArrayList<Point3D>();
 
-    private double positionX;
-    private double positionY;
+    private float positionX;
+    private float positionY;
 
     private Vector2D velocity;
 
     private double[][] rotationMatrix;
 
-    public Ball(int startX, int startY) {
+    public Ball(float startX, float startY) {
 
         positionX = startX;
         positionY = startY;
 
-        velocity = new Vector2D(0, 0);
+        velocity = new Vector2D(1, 1);
 
         createPoints();
         rotationMatrix = Util.calculateRotationMatrix(0, 0, 0);
     }
 
-    public double getPositionX() {
+    public float getPositionX() {
         return positionX;
     }
 
-    public double getPositionY() {
+    public float getPositionY() {
         return positionY;
     }
 
-    public static double getRadius() {
+    public static float getRadius() {
         return radius;
     }
 
@@ -57,10 +57,9 @@ public class Ball {
 
     public void accelerate(Vector2D accelerationVector) {
         velocity.add(accelerationVector);
-        roll(velocity);
     }
 
-    private void roll(Vector2D velocity) {
+    public void roll() {
 
         positionX += velocity.getX();
         positionY += velocity.getY();

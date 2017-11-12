@@ -14,46 +14,59 @@ import nik.uniobuda.hu.balancingball.physics.Physics;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SensorManager mSensorManager;
+    /*private SensorManager mSensorManager;
+
 
     TextView textViewX;
     TextView textViewY;
     TextView textViewZ;
+    */
 
+    GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
 
+        gameView = new GameView(this);
+        setContentView(gameView);
+
+        /*
         textViewX = (TextView) findViewById(R.id.x);
         textViewY = (TextView) findViewById(R.id.y);
         textViewZ = (TextView) findViewById(R.id.z);
 
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         Log.e("BB", "OnCreate, sensor: " + mSensorManager.toString());
-
+        */
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        gameView.resume();
+        /*
         Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         Sensor magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         mSensorManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_UI);
         mSensorManager.registerListener(listener, magnetometer, SensorManager.SENSOR_DELAY_UI);
         Log.e("BB", "OnResume, acc: " + accelerometer.toString() + "magn: " + magnetometer.toString());
+        */
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        gameView.pause();
+
+        /*
         mSensorManager.unregisterListener(listener);
         Log.e("BB", "onPause, leiratkozott mindenki");
+        */
     }
-
+/*
     private SensorEventListener listener = new SensorEventListener() {
 
         float[] mGravity;
@@ -97,4 +110,5 @@ public class MainActivity extends AppCompatActivity {
         textViewZ.setText("roll: " + Math.round(180*roll/Math.PI));
 
     }
+    */
 }
