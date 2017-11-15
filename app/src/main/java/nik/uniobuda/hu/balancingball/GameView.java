@@ -4,16 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.constraint.solver.ArrayLinkedVariables;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 import java.util.ArrayList;
-
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Point3D;
-import nik.uniobuda.hu.balancingball.model.Vector2D;
+
 
 /**
  * Created by cserof on 11/12/2017.
