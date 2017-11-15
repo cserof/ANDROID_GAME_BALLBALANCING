@@ -1,15 +1,26 @@
 package nik.uniobuda.hu.balancingball;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.util.Xml;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import nik.uniobuda.hu.balancingball.model.Ball;
+import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.Point3D;
+import nik.uniobuda.hu.balancingball.util.mapElement;
+import nik.uniobuda.hu.balancingball.util.mapType;
 
 
 /**
@@ -26,7 +37,7 @@ public class GameView extends SurfaceView implements Runnable {
     volatile boolean playing;
     Canvas canvas;
     Paint paint;
-
+    Level lvl;
     Ball ball;
 
     long fps;
@@ -39,6 +50,78 @@ public class GameView extends SurfaceView implements Runnable {
         surfaceHolder = getHolder();
         paint = new Paint();
         playing = true;
+        init();
+    }
+
+    private void init() {
+        //xml parse
+
+        try {
+            xmlParsing();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void xmlParsing() throws XmlPullParserException, IOException {
+        XmlResourceParser xrp = getResources().getXml(R.xml.map);
+        int eventType = xrp.getEventType();
+
+        int levelNumber = 0;
+        String levelMsg = "";
+        ArrayList<mapElement> mapElements = new ArrayList<mapElement>();
+
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            if (eventType == XmlPullParser.START_DOCUMENT) {
+                Log.d("BB", "XML parsing...");
+            }
+            if (eventType == XmlPullParser.START_TAG) {
+                String name = xrp.getName();
+                if (name.equals("levelNumber")) {
+                    levelNumber = Integer.parseInt(xrp.nextText());
+                    Log.d("BB", "Name: levelNumber, text: " + levelNumber);
+                }
+                if (name.equals("levelMsg")) {
+                    levelMsg = xrp.nextText();
+                    Log.d("BB", "Name: levelMsg, text: " + levelMsg);
+                }
+                if (name.equals("mapElement")) {
+
+                    double x = Double.parseDouble(xrp.getAttributeValue(null, "x"));
+                    double y = Double.parseDouble(xrp.getAttributeValue(null, "y"));
+                    double height = Double.parseDouble(xrp.getAttributeValue(null, "height"));
+                    double width = Double.parseDouble(xrp.getAttributeValue(null, "width"));
+                    String type = xrp.getAttributeValue(null, "type");
+
+                    boolean bottomDmg = xrp.getAttributeBooleanValue(null, "bottomDmg",false);
+                    boolean topDmg = xrp.getAttributeBooleanValue(null, "topDmg",false);
+                    boolean	rightDmg = xrp.getAttributeBooleanValue(null, "rightDmg",false);
+                    boolean	leftDmg = xrp.getAttributeBooleanValue(null, "leftDmg",false);
+
+                    mapType mt = null;
+                    switch (type) {
+                        case "WALL" :
+                            mt = mapType.WALL;
+                            break;
+                        case "START":
+                            mt = mapType.START;
+                            break;
+                        case "FINISH":
+                            mt = mapType.FINISH;
+                            break;
+                        default:
+                            break;
+                    }
+                    Log.d("BB", "Name: mapElement");
+                    mapElements.add(new mapElement(x,y,height, width,mt, bottomDmg, topDmg, rightDmg, leftDmg));
+                }
+            }
+            eventType = xrp.next();
+        }
+        lvl = new Level(levelNumber, levelMsg, mapElements);
     }
 
 
