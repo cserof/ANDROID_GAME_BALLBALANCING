@@ -54,10 +54,16 @@ public class GameView extends SurfaceView implements Runnable {
             draw();
             timeThisFrame = System.currentTimeMillis() - startFrameTime;
             try {
-                Thread.sleep(gameCyclePeriod - timeThisFrame);
+                long sleepTime = gameCyclePeriod - timeThisFrame;
+                if (sleepTime > 0) {
+                    Thread.sleep(sleepTime);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            //testing fps kiiratas
+            timeThisFrame = System.currentTimeMillis() - startFrameTime;
             if (timeThisFrame > 0) {
                 fps = 1000 / timeThisFrame;
             }

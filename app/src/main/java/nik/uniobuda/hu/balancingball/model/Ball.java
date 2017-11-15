@@ -2,6 +2,7 @@ package nik.uniobuda.hu.balancingball.model;
 
 import java.util.ArrayList;
 
+import nik.uniobuda.hu.balancingball.physics.Physics;
 import nik.uniobuda.hu.balancingball.util.Util;
 
 /**
@@ -89,5 +90,13 @@ public class Ball {
 
     public void setAcceleration(Vector2D acceleration) {
         this.acceleration = acceleration;
+    }
+
+    public void calculateForceOnTheBall(float[] orientation) {
+        double azimut = orientation[0];
+        double pitch = orientation[1];
+        double roll = orientation[2];
+
+        setAcceleration(Physics.getAccelerationVector(-pitch, roll));
     }
 }

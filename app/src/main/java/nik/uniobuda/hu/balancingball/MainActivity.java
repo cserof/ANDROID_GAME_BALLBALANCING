@@ -13,19 +13,12 @@ import nik.uniobuda.hu.balancingball.physics.Physics;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SensorManager mSensorManager;
+    private final static int startX = 0;
+    private final static int startY = 0;
 
-/*
-    TextView textViewX;
-    TextView textViewY;
-    TextView textViewZ;
-    */
-
-    GameView gameView;
-    Ball ball;
-
-    final static int startX = 0;
-    final static int startY = 0;
+    private GameView gameView;
+    private Ball ball;
+    private SensorController sensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,80 +28,21 @@ public class MainActivity extends AppCompatActivity {
         ball = new Ball(startX, startY);
         gameView = new GameView(this, ball);
         setContentView(gameView);
-
-        /*
-        textViewX = (TextView) findViewById(R.id.x);
-        textViewY = (TextView) findViewById(R.id.y);
-        textViewZ = (TextView) findViewById(R.id.z);
-
-        */
-        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-        Log.e("BB", "OnCreate, sensor: " + mSensorManager.toString());
-
+        sensor = new SensorController(this, ball);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         gameView.resume();
-
-        Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        Sensor magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-
-        mSensorManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_UI);
-        mSensorManager.registerListener(listener, magnetometer, SensorManager.SENSOR_DELAY_UI);
-        Log.e("BB", "OnResume, acc: " + accelerometer.toString() + "magn: " + magnetometer.toString());
+        sensor.registerSensors();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         gameView.pause();
-
-        mSensorManager.unregisterListener(listener);
-        Log.e("BB", "onPause, leiratkozott mindenki");
+        sensor.unregisterSensors();
     }
 
-    private SensorEventListener listener = new SensorEventListener() {
-
-        float[] mGravity;
-        float[] mGeomagnetic;
-
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            Log.e("BB", "onSensorChanged, : " + event.sensor + " " + event.values);
-            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
-                mGravity = event.values;
-            if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
-                mGeomagnetic = event.values;
-            if (mGravity != null && mGeomagnetic != null) {
-                float R[] = new float[9];
-                float I[] = new float[9];
-                boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
-                if (success) {
-                    float orientation[] = new float[3];
-                    SensorManager.getOrientation(R, orientation);
-                    calculateForceOnTheBall(orientation);
-                }
-            }
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        }
-    };
-
-    private void calculateForceOnTheBall(float[] orientation) {
-        double azimut = orientation[0];
-        double pitch = orientation[1];
-        double roll = orientation[2];
-
-        ball.setAcceleration(Physics.getAccelerationVector(-pitch, roll));
-
-        /*
-        textViewX.setText("tilt vector: " + v.getX() + ", " + v.getY() + "  : " + Math.toDegrees(v.getDirection()));
-        textViewY.setText("pitch: " + Math.round(180*pitch/Math.PI));
-        textViewZ.setText("roll: " + Math.round(180*roll/Math.PI));
-        */
-    }
 }
