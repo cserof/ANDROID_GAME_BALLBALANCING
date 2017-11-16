@@ -1,13 +1,11 @@
 package nik.uniobuda.hu.balancingball;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
-import android.util.Xml;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.Point3D;
-import nik.uniobuda.hu.balancingball.util.mapElement;
+import nik.uniobuda.hu.balancingball.model.mapElement;
 import nik.uniobuda.hu.balancingball.util.mapType;
 
 
