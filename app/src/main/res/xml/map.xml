@@ -3,10 +3,10 @@
 		<levelNumber>1</levelNumber>
 		<levelMsg>"Get to the finish line!"</levelMsg>
 		<mapElements>
-			<mapElement type="WALL" x="20" y="0" width="5" height="100" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
-			<mapElement type="WALL" x="75" y="0" width="5" height="100" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
-			<mapElement type="START" x="25" y="0" width="50" height="10" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
-			<mapElement type="FINISH" x="25" y="90" width="50" height="10" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+			<mapElement type="WALL" left="20" top="0" right="25" bottom="100" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+			<mapElement type="WALL" left="75" top="0" right="80" bottom="100" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+			<mapElement type="START" left="25" top="0" right="75" bottom="10" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+			<mapElement type="FINISH" left="25" top="90" right="75" bottom="80" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
 		</mapElements>
 	</level>
 </levels>
