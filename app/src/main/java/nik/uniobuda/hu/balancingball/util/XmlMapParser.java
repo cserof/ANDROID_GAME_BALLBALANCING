@@ -1,7 +1,6 @@
 package nik.uniobuda.hu.balancingball.util;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.util.Log;
 
@@ -48,6 +47,8 @@ public class XmlMapParser {
         int eventType = xrp.getEventType();
 
         int levelNumber = 0;
+        float startX = 0;
+        float startY = 0;
         String levelMsg = "";
         ArrayList<MapElement> mapElements = new ArrayList<MapElement>();
 
@@ -60,13 +61,19 @@ public class XmlMapParser {
                 if (name.equals("levelMsg")) {
                     levelMsg = xrp.nextText();
                 }
+                if (name.equals("startX")) {
+                    startX = Float.parseFloat(xrp.nextText());
+                }
+                if (name.equals("startY")) {
+                    startY = Float.parseFloat(xrp.nextText());
+                }
                 if (name.equals("mapElement")) {
                     mapElements.add(parseMapElement(xrp));
                 }
             }
             eventType = xrp.next();
         }
-        Level lvl = new Level(levelNumber, levelMsg, mapElements);
+        Level lvl = new Level(levelNumber, levelMsg, mapElements, startX, startY);
         return lvl;
     }
 

@@ -2,11 +2,13 @@
 	<level>
 		<levelNumber>1</levelNumber>
 		<levelMsg>"Get to the finish line!"</levelMsg>
+		<startX>500</startX>
+		<startY>0</startY>
 		<mapElements>
 			<mapElement type="WALL" left="20" top="0" right="25" bottom="100" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
 			<mapElement type="WALL" left="75" top="0" right="80" bottom="100" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
 			<mapElement type="START" left="25" top="0" right="75" bottom="10" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
-			<mapElement type="FINISH" left="25" top="90" right="75" bottom="80" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+			<mapElement type="FINISH" left="25" top="90" right="75" bottom="100" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
 		</mapElements>
 	</level>
 </levels>

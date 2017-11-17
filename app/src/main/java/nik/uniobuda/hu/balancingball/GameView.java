@@ -15,7 +15,6 @@ import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.MapElement;
 import nik.uniobuda.hu.balancingball.model.Point3D;
-import nik.uniobuda.hu.balancingball.util.XmlMapParser;
 
 
 /**
@@ -42,11 +41,12 @@ public class GameView extends SurfaceView implements Runnable {
     int screenWidth;
     int screenHeight;
 
-    public GameView(Context context, Ball ball) {
+    public GameView(Context context, Ball ball, Level lvl) {
         super(context);
 
         this.context = context;
         this.ball = ball;
+        this.lvl = lvl;
         surfaceHolder = getHolder();
         paint = new Paint();
         playing = true;
@@ -54,8 +54,6 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void init() {
-        XmlMapParser parser = new XmlMapParser(context);
-        lvl = parser.getParsedMap();
         getScreenSize();
         //surfaceHolder.addCallback(new MyCallback());
     }
@@ -176,7 +174,7 @@ public class GameView extends SurfaceView implements Runnable {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
-        display.getRealSize(size);
+        display.getSize(size);
         screenWidth = size.x;
         screenHeight = size.y;
     }
