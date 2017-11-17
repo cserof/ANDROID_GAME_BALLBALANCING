@@ -2,18 +2,15 @@ package nik.uniobuda.hu.balancingball.util;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import android.util.Log;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import nik.uniobuda.hu.balancingball.R;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.MapElement;
-
 import static nik.uniobuda.hu.balancingball.util.mapType.FINISH;
 import static nik.uniobuda.hu.balancingball.util.mapType.START;
 import static nik.uniobuda.hu.balancingball.util.mapType.WALL;
@@ -30,48 +27,66 @@ public class XmlMapParser {
         this.context = context;
     }
 
-    public Level getParsedMap() {
-        Level lvl = null;
+    public List<Level> getParsedMap() {
+        List<Level> levels = null;
         try {
-            lvl = xmlParsing();
+            levels = xmlParsing();
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return lvl;
+        return levels;
     }
 
-    private Level xmlParsing() throws XmlPullParserException, IOException {
+    private List<Level> xmlParsing() throws XmlPullParserException, IOException {
         XmlResourceParser xrp = context.getResources().getXml(R.xml.map);
         int eventType = xrp.getEventType();
 
+        List<Level> levels = new ArrayList<Level>();
+
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            if (eventType == XmlPullParser.START_TAG) {
+                String name = xrp.getName();
+                if (name.equals("level")) {
+                    xrp.next();
+                    levels.add(parseLevel(xrp));
+                }
+            }
+            eventType = xrp.next();
+        }
+        return levels;
+    }
+
+    private Level parseLevel(XmlResourceParser xrp) throws IOException, XmlPullParserException {
         int levelNumber = 0;
         float startX = 0;
         float startY = 0;
         String levelMsg = "";
         ArrayList<MapElement> mapElements = new ArrayList<MapElement>();
 
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            if (eventType == XmlPullParser.START_TAG) {
-                String name = xrp.getName();
-                if (name.equals("levelNumber")) {
-                    levelNumber = Integer.parseInt(xrp.nextText());
-                }
-                if (name.equals("levelMsg")) {
-                    levelMsg = xrp.nextText();
-                }
-                if (name.equals("startX")) {
-                    startX = Float.parseFloat(xrp.nextText());
-                }
-                if (name.equals("startY")) {
-                    startY = Float.parseFloat(xrp.nextText());
-                }
-                if (name.equals("mapElement")) {
-                    mapElements.add(parseMapElement(xrp));
-                }
+        int eventType = xrp.getEventType();
+
+        String name = xrp.getName();
+        while (!(eventType == XmlPullParser.END_TAG && name.equals("level"))) {
+            if (name.equals("levelNumber")) {
+                levelNumber = Integer.parseInt(xrp.nextText());
+            }
+            if (name.equals("levelMsg")) {
+                levelMsg = xrp.nextText();
+            }
+            if (name.equals("startX")) {
+                startX = Float.parseFloat(xrp.nextText());
+            }
+            if (name.equals("startY")) {
+                startY = Float.parseFloat(xrp.nextText());
+            }
+            if (name.equals("mapElement")) {
+                mapElements.add(parseMapElement(xrp));
+                xrp.nextText();
             }
             eventType = xrp.next();
+            name = xrp.getName();
         }
         Level lvl = new Level(levelNumber, levelMsg, mapElements, startX, startY);
         return lvl;

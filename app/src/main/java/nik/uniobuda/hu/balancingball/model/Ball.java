@@ -2,7 +2,7 @@ package nik.uniobuda.hu.balancingball.model;
 
 import java.util.ArrayList;
 
-import nik.uniobuda.hu.balancingball.physics.Physics;
+import nik.uniobuda.hu.balancingball.logic.Physics;
 import nik.uniobuda.hu.balancingball.util.Util;
 
 /**

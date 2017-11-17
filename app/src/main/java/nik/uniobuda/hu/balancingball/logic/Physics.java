@@ -1,4 +1,4 @@
-package nik.uniobuda.hu.balancingball.physics;
+package nik.uniobuda.hu.balancingball.logic;
 
 import nik.uniobuda.hu.balancingball.model.Vector2D;
 

@@ -1,14 +1,12 @@
-package nik.uniobuda.hu.balancingball;
+package nik.uniobuda.hu.balancingball.logic;
 
 import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 import nik.uniobuda.hu.balancingball.model.Ball;
-import nik.uniobuda.hu.balancingball.physics.Physics;
 
 import static android.content.Context.SENSOR_SERVICE;
 

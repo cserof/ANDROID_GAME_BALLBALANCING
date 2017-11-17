@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="nik.uniobuda.hu.balancingball.LevelsActivity">
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LEVELS"
+        android:paddingTop="30dp"
+        android:textAlignment="center"
+        android:textSize="50sp"/>
+    <android.support.v7.widget.ListViewCompat
+        android:paddingTop="20dp"
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </android.support.v7.widget.ListViewCompat>
+
+</android.support.v7.widget.LinearLayoutCompat>

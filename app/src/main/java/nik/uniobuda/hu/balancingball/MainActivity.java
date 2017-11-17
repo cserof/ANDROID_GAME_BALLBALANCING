@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import nik.uniobuda.hu.balancingball.model.Ball;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,15 +16,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textViewStart = (TextView) findViewById(R.id.start);
-        textViewStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, GameActivity.class);
-                startActivity(i);
-            }
-        });
+        initTextViewStart();
     }
+
 
     @Override
     protected void onResume() {
@@ -38,6 +30,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+    }
+
+    private void initTextViewStart() {
+        textViewStart = (TextView) findViewById(R.id.start);
+        textViewStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, LevelsActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
 }
