@@ -21,6 +21,14 @@ public class Vector2D {
         return y;
     }
 
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
     public double getDirection() {
         double direction;
         if (x==0 && y > 0) {
@@ -37,12 +45,6 @@ public class Vector2D {
         }
 
         return direction;
-    }
-
-    public void setDirection(double angle) {
-        double distance = getDistance();
-        this.x = distance * Math.cos(angle);
-        this.y = distance * Math.sin(angle);
     }
 
     public double getDistance() {
