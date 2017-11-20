@@ -23,30 +23,37 @@ import nik.uniobuda.hu.balancingball.model.Point3D;
 
 public class GameView extends SurfaceView implements Runnable {
 
-    static final long targetFps = 25 ;
-    static final long gameCyclePeriod = 40;
+    private static final long targetFps = 25 ;
+    private static final long gameCyclePeriod = 40;
 
-    Context context;
-    Thread gameThread = null;
-    SurfaceHolder surfaceHolder;
-    volatile boolean playing;
-    Canvas canvas;
-    Paint paint;
-    Level lvl;
-    Ball ball;
-
-    long fps;
+    private long fps;
     private long timeThisFrame;
 
-    int screenWidth;
-    int screenHeight;
+    private Level level;
+    private Ball ball;
+
+    private Context context;
+    private Thread gameThread = null;
+    private SurfaceHolder surfaceHolder;
+    private volatile boolean playing;
+    private Canvas canvas;
+    private Paint paint;
+
+    private float scale;
+    private float horizontalOffset;
+    private float verticalOffset;
+    
+    
+    //// TODO: 11/20/2017 kiszervezni xml-be 
+    private static final float mapWidth = 1125;
+    private static final float mapHeight = 2000;
 
     public GameView(Context context, Ball ball, Level lvl) {
         super(context);
 
         this.context = context;
         this.ball = ball;
-        this.lvl = lvl;
+        this.level = lvl;
         surfaceHolder = getHolder();
         paint = new Paint();
         playing = true;
@@ -55,7 +62,32 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void init() {
         getScreenSize();
+        calcScale();
         //surfaceHolder.addCallback(new MyCallback());
+    }
+
+    private void calcScale() {
+        int screenWidth;
+        int screenHeight;
+
+        Point size = getScreenSize();
+        screenWidth = size.x;
+        screenHeight = size.y;
+
+        float mapRatio = mapWidth / mapHeight;
+        float screenRatio = screenWidth / screenHeight;
+
+        verticalOffset = 0;
+        horizontalOffset = 0;
+
+        if (mapRatio > screenRatio) {
+            scale = screenWidth / mapWidth;
+            verticalOffset = (screenHeight - scale*mapHeight)/2;
+        }
+        else {
+            scale = screenWidth / mapHeight;
+            horizontalOffset = (screenWidth - scale*mapWidth)/2;
+        }
     }
 
     //// TODO: 11/16/2017
@@ -130,8 +162,15 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void drawMovingObjects() {
+        float drawnX = ball.getPositionX()*scale + horizontalOffset;
+        float drawnY = ball.getPositionY()*scale + verticalOffset;
+
         paint.setColor(Color.RED);
-        canvas.drawCircle(ball.getPositionX(), ball.getPositionY(), ball.getRadius(), paint);
+        canvas.drawCircle(
+                drawnX,
+                drawnY,
+                ball.getRadius()*scale,
+                paint);
 
         paint.setColor(Color.BLACK);
 
@@ -139,8 +178,8 @@ public class GameView extends SurfaceView implements Runnable {
         for (Point3D point : points) {
             if (point.getDisplayedZ() > 0) {
                 canvas.drawCircle(
-                        ball.getPositionX() + point.getDisplayedX(),
-                        ball.getPositionY() + point.getDisplayedY(),
+                        drawnX + point.getDisplayedX()*scale + horizontalOffset,
+                        drawnY + point.getDisplayedY()*scale + verticalOffset,
                         3,
                         paint);
             }
@@ -148,7 +187,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void drawLevelBackground() {
-        for (MapElement element : lvl.getMapElements()) {
+        for (MapElement element : level.getMapElements()) {
             switch (element.getType()) {
                 case FINISH :
                     paint.setColor(Color.GREEN);
@@ -161,22 +200,21 @@ public class GameView extends SurfaceView implements Runnable {
                     break;
             }
             canvas.drawRect(
-                    screenWidth * element.getLeft() / 100,
-                    screenHeight * element.getTop() / 100,
-                    screenWidth * element.getRight() / 100,
-                    screenHeight * element.getBottom() / 100,
+                    element.getLeft()*scale + horizontalOffset,
+                    element.getTop()*scale + verticalOffset,
+                    element.getRight()*scale + horizontalOffset,
+                    element.getBottom()*scale + verticalOffset,
                     paint
             );
         }
     }
 
-    private void getScreenSize() {
+    private Point getScreenSize() {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        screenWidth = size.x;
-        screenHeight = size.y;
+        return size;
     }
 
 
