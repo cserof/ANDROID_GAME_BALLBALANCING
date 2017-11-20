@@ -23,7 +23,6 @@ import nik.uniobuda.hu.balancingball.model.Point3D;
 
 public class GameView extends SurfaceView implements Runnable {
 
-    private static final long targetFps = 25 ;
     private static final long gameCyclePeriod = 40;
 
     private long fps;
@@ -31,6 +30,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private Level level;
     private Ball ball;
+    private CollisionDetector cd;
 
     private Context context;
     private Thread gameThread = null;
@@ -54,6 +54,7 @@ public class GameView extends SurfaceView implements Runnable {
         this.context = context;
         this.ball = ball;
         this.level = lvl;
+        this.cd = new CollisionDetector(ball, level);
         surfaceHolder = getHolder();
         paint = new Paint();
         playing = true;
@@ -178,8 +179,8 @@ public class GameView extends SurfaceView implements Runnable {
         for (Point3D point : points) {
             if (point.getDisplayedZ() > 0) {
                 canvas.drawCircle(
-                        drawnX + point.getDisplayedX()*scale + horizontalOffset,
-                        drawnY + point.getDisplayedY()*scale + verticalOffset,
+                        drawnX + point.getDisplayedX()*scale,
+                        drawnY + point.getDisplayedY()*scale,
                         3,
                         paint);
             }
@@ -219,8 +220,11 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private void update() {
-        ball.accelerate();
+        if (!cd.isJustCollided()) {
+            ball.accelerate();
+        }
         ball.roll();
+        cd.detect();
     }
 
     public void pause() {

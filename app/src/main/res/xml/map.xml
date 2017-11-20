@@ -14,13 +14,15 @@
 	<level>
 		<levelNumber>2</levelNumber>
 		<levelMsg>"Get to the finish line!"</levelMsg>
-		<startX>500</startX>
-		<startY>0</startY>
+		<startX>0</startX>
+		<startY>50</startY>
 		<mapElements>
-			<mapElement type="WALL" left="225" top="0" right="281.25" bottom="2000" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
-			<mapElement type="WALL" left="843.75" top="0" right="900" bottom="2000" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
-			<mapElement type="START" left="281.25" top="0" right="843.75" bottom="200" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
-			<mapElement type="FINISH" left="281.25" top="1800" right="843.75" bottom="2000" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+			<mapElement type="WALL" left="100" top="50" right="1150" bottom="100" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+			<mapElement type="WALL" left="100" top="250" right="900" bottom="300" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+			<mapElement type="WALL" left="850" top="250" right="900" bottom="1800" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+			<mapElement type="WALL" left="1050" top="50" right="1100" bottom="1800" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+			<mapElement type="START" left="0" top="50" right="100" bottom="300" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+			<mapElement type="FINISH" left="850" top="1800" right="1100" bottom="2000" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
 		</mapElements>
 	</level>
 </levels>

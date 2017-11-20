@@ -99,4 +99,8 @@ public class Ball {
 
         setAcceleration(Physics.getAccelerationVector(-pitch, roll));
     }
+
+    public void bounce(double angle) {
+        velocity.setDirection(-velocity.getDirection() + angle);
+    }
 }

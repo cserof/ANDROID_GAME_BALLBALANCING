@@ -39,6 +39,12 @@ public class Vector2D {
         return direction;
     }
 
+    public void setDirection(double angle) {
+        double distance = getDistance();
+        this.x = distance * Math.cos(angle);
+        this.y = distance * Math.sin(angle);
+    }
+
     public double getDistance() {
         return Math.sqrt(x*x+y*y);
     }
