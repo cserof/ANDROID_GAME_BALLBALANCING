@@ -2,7 +2,6 @@ package nik.uniobuda.hu.balancingball.model;
 
 import java.util.ArrayList;
 
-import nik.uniobuda.hu.balancingball.logic.Physics;
 import nik.uniobuda.hu.balancingball.util.Util;
 
 /**
@@ -74,6 +73,26 @@ public class Ball {
         calcRotationMatrix(Util.matrixMultiplication(Util.matrixMultiplication(m3, m2), m1));
     }
 
+    public void calculateForceOnTheBall(float[] orientation) {
+        //double azimut = orientation[0];
+        double pitch = orientation[1];
+        double roll = orientation[2];
+
+        calculateAcceleration(-pitch, roll);
+    }
+
+    private void calculateAcceleration(double pitch, double roll) {
+        this.acceleration.setX(Math.sin(roll));
+        this.acceleration.setY(Math.sin(pitch));
+    }
+
+    public void bounceOnVertical() {
+        velocity.setX(-velocity.getX());
+    }
+    public void bounceOnHorizontal() {
+        velocity.setY(-velocity.getY());
+    }
+
     private void createPoints()
     {
         points.add(new Point3D(-radius, 0, 0));
@@ -82,28 +101,5 @@ public class Ball {
         points.add(new Point3D(0, radius, 0));
         points.add(new Point3D(0, 0, -radius));
         points.add(new Point3D(0, 0, radius));
-    }
-
-    public Vector2D getAcceleration() {
-        return acceleration;
-    }
-
-    public void setAcceleration(Vector2D acceleration) {
-        this.acceleration = acceleration;
-    }
-
-    public void calculateForceOnTheBall(float[] orientation) {
-        double azimut = orientation[0];
-        double pitch = orientation[1];
-        double roll = orientation[2];
-
-        setAcceleration(Physics.getAccelerationVector(-pitch, roll));
-    }
-
-    public void bounceOnVertical() {
-        velocity.setX(-velocity.getX());
-    }
-    public void bounceOnHorizontal() {
-        velocity.setY(-velocity.getY());
     }
 }

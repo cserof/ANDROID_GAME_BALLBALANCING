@@ -17,11 +17,9 @@ import static android.content.Context.SENSOR_SERVICE;
 public class SensorController {
 
     private SensorManager mSensorManager;
-    private Activity activity;
     private Ball ball;
 
     public SensorController(Activity activity, Ball ball) {
-        this.activity = activity;
         this.ball = ball;
         mSensorManager = (SensorManager)activity.getSystemService(SENSOR_SERVICE);
     }
