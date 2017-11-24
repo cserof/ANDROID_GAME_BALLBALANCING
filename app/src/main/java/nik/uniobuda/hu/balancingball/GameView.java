@@ -10,6 +10,8 @@ import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 import nik.uniobuda.hu.balancingball.logic.CollisionDetector;
@@ -17,6 +19,8 @@ import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.MapElement;
 import nik.uniobuda.hu.balancingball.model.Point3D;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 
 /**
@@ -39,7 +43,9 @@ public class GameView extends SurfaceView implements Runnable {
     private SurfaceHolder surfaceHolder;
     private volatile boolean playing;
     private Canvas canvas;
-    private Paint paint;
+
+    private Paint fillPaint;
+    private Paint strokePaint;
 
     private float scale;
     private float horizontalOffset;
@@ -53,7 +59,6 @@ public class GameView extends SurfaceView implements Runnable {
         this.level = lvl;
         this.cd = new CollisionDetector(ball, level);
         surfaceHolder = getHolder();
-        paint = new Paint();
         playing = true;
         init();
     }
@@ -61,7 +66,17 @@ public class GameView extends SurfaceView implements Runnable {
     private void init() {
         getScreenSize();
         calcScale();
+        initPaints();
         //surfaceHolder.addCallback(new MyCallback());
+    }
+
+    private void initPaints() {
+        fillPaint = new Paint();
+        fillPaint.setStyle(Paint.Style.FILL);
+
+        strokePaint = new Paint();
+        strokePaint.setStyle(Paint.Style.STROKE);
+        strokePaint.setColor(Color.BLACK);
     }
 
     private void calcScale() {
@@ -137,6 +152,9 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
+        if (ball.isDamaged()) {
+            drawLosingMessage();
+        }
     }
 
     private void draw() {
@@ -156,24 +174,29 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void showDebugInfo() {
-        paint.setTextSize(45);
-        canvas.drawText("FPS:" + fps, 20, 40, paint);
-        canvas.drawText("x:  " + ball.getPositionX(), 20, 90, paint);
-        canvas.drawText("y: " +  ball.getPositionY(), 20, 140, paint);
+        fillPaint.setTextSize(45);
+        canvas.drawText("FPS:" + fps, 20, 40, fillPaint);
+        canvas.drawText("x:  " + ball.getPositionX(), 20, 90, fillPaint);
+        canvas.drawText("y: " +  ball.getPositionY(), 20, 140, fillPaint);
     }
 
     private void drawMovingObjects() {
         float drawnX = ball.getPositionX()*scale + horizontalOffset;
         float drawnY = ball.getPositionY()*scale + verticalOffset;
 
-        paint.setColor(Color.RED);
+        fillPaint.setColor(Color.RED);
         canvas.drawCircle(
                 drawnX,
                 drawnY,
                 ball.getRadius()*scale,
-                paint);
+                fillPaint);
+        canvas.drawCircle(
+                drawnX,
+                drawnY,
+                ball.getRadius()*scale,
+                strokePaint);
 
-        paint.setColor(Color.BLACK);
+        fillPaint.setColor(Color.BLACK);
 
         ArrayList<Point3D> points = ball.getPoints();
         for (Point3D point : points) {
@@ -182,7 +205,7 @@ public class GameView extends SurfaceView implements Runnable {
                         drawnX + point.getDisplayedX()*scale,
                         drawnY + point.getDisplayedY()*scale,
                         3,
-                        paint);
+                        fillPaint);
             }
         }
     }
@@ -191,13 +214,18 @@ public class GameView extends SurfaceView implements Runnable {
         for (MapElement element : level.getMapElements()) {
             switch (element.getType()) {
                 case FINISH :
-                    paint.setColor(Color.GREEN);
+                    fillPaint.setColor(Color.GREEN);
                     break;
                 case START:
-                    paint.setColor(Color.BLUE);
+                    fillPaint.setColor(Color.BLUE);
                     break;
                 case WALL:
-                    paint.setColor(Color.LTGRAY);
+                    if (element.isDamage()) {
+                        fillPaint.setColor(Color.DKGRAY);
+                    }
+                    else {
+                        fillPaint.setColor(Color.LTGRAY);
+                    }
                     break;
             }
             canvas.drawRect(
@@ -205,7 +233,14 @@ public class GameView extends SurfaceView implements Runnable {
                     element.getTop()*scale + verticalOffset,
                     element.getRight()*scale + horizontalOffset,
                     element.getBottom()*scale + verticalOffset,
-                    paint
+                    fillPaint
+            );
+            canvas.drawRect(
+                    element.getLeft()*scale + horizontalOffset,
+                    element.getTop()*scale + verticalOffset,
+                    element.getRight()*scale + horizontalOffset,
+                    element.getBottom()*scale + verticalOffset,
+                    strokePaint
             );
         }
     }
@@ -220,11 +255,30 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private void update() {
-        if (!cd.isJustCollided()) {
-            ball.accelerate();
+        if (!ball.isDamaged()) {
+            if (!cd.isJustCollided()) {
+                ball.accelerate();
+            }
+            ball.roll();
+            cd.detect();
         }
-        ball.roll();
-        cd.detect();
+        else {
+            playing = false;
+        }
+    }
+
+    private void drawLosingMessage() {
+        if (surfaceHolder.getSurface().isValid()) {
+
+            canvas = surfaceHolder.lockCanvas();
+            fillPaint.setColor(Color.BLACK);
+            fillPaint.setTextSize(100);
+            int xPos = (canvas.getWidth() / 2);
+            int yPos = (int) ((canvas.getHeight() / 2) - ((fillPaint.descent() + fillPaint.ascent()) / 2)) ;
+            fillPaint.setTextAlign(Paint.Align.CENTER);
+            canvas.drawText("YOU LOST", xPos, yPos, fillPaint);
+            surfaceHolder.unlockCanvasAndPost(canvas);
+        }
     }
 
     public void pause() {

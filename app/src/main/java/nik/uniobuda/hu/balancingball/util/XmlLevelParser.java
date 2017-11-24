@@ -131,10 +131,7 @@ public class XmlLevelParser {
         float bottom = Float.parseFloat(xrp.getAttributeValue(null, "bottom"));
         String type = xrp.getAttributeValue(null, "type");
 
-        boolean bottomDmg = xrp.getAttributeBooleanValue(null, "bottomDmg",false);
-        boolean topDmg = xrp.getAttributeBooleanValue(null, "topDmg",false);
-        boolean	rightDmg = xrp.getAttributeBooleanValue(null, "rightDmg",false);
-        boolean	leftDmg = xrp.getAttributeBooleanValue(null, "leftDmg",false);
+        boolean isDamage = xrp.getAttributeBooleanValue(null, "isDamage",false);
 
         mapType mt = null;
         switch (type) {
@@ -150,6 +147,6 @@ public class XmlLevelParser {
             default:
                 break;
         }
-        return new MapElement(left,top,right, bottom,mt, bottomDmg, topDmg, rightDmg, leftDmg);
+        return new MapElement(left,top,right, bottom,mt, isDamage);
     }
 }

@@ -29,22 +29,37 @@ public class CollisionDetector {
             }
         }
         else {
-            for (MapElement element : lvl.getMapElements()) {
-                if (isCollided(element)) {
-                    if (element.getType() == mapType.WALL) {
+            iterateElementsToDetect();
+        }
+    }
 
-                        justCollided = true;
-                        lastCollisionObject = element;
-
-                        if (ball.getPositionX() > element.getLeft() &&
-                                ball.getPositionX() < element.getRight()) {
-                            ball.bounceOnHorizontal();
-                        }
-                        else {
-                            ball.bounceOnVertical();
-                        }
-                    }
+    private void iterateElementsToDetect() {
+        for (MapElement element : lvl.getMapElements()) {
+            if (isCollided(element)) {
+                switch (element.getType()) {
+                    case WALL:
+                        collisionOnWall(element);
                 }
+            }
+        }
+    }
+
+    private void collisionOnWall(MapElement element) {
+        justCollided = true;
+        lastCollisionObject = element;
+
+        if (element.isDamage()) {
+            ball.setDamaged(true);
+        }
+        else {
+            boolean isHorizontalCollision = ball.getPositionX() > element.getLeft() &&
+                    ball.getPositionX() < element.getRight();
+
+            if (isHorizontalCollision) {
+                ball.bounceOnHorizontal();
+            }
+            else {
+                ball.bounceOnVertical();
             }
         }
     }

@@ -47,4 +47,6 @@ public class GameActivity extends AppCompatActivity {
         gameView.pause();
         sensor.unregisterSensors();
     }
+
+
 }

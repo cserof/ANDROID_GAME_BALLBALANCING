@@ -16,21 +16,15 @@ public class MapElement {
     float bottom;
     mapType type;
 
-    boolean bottomDmg;
-    boolean	topDmg;
-    boolean	rightDmg;
-    boolean	leftDmg;
+    boolean isDamage;
 
-    public MapElement(float left, float top, float right, float bottom, mapType type, boolean bottomDmg, boolean topDmg, boolean rightDmg, boolean leftDmg) {
+    public MapElement(float left, float top, float right, float bottom, mapType type, boolean isDamage) {
         this.left = left;
         this.top = top;
         this.right = right;
         this.bottom = bottom;
         this.type = type;
-        this.bottomDmg = bottomDmg;
-        this.topDmg = topDmg;
-        this.rightDmg = rightDmg;
-        this.leftDmg = leftDmg;
+        this.isDamage = isDamage;
     }
 
     public float getLeft() {
@@ -53,19 +47,7 @@ public class MapElement {
         return type;
     }
 
-    public boolean isBottomDmg() {
-        return bottomDmg;
-    }
-
-    public boolean isTopDmg() {
-        return topDmg;
-    }
-
-    public boolean isRightDmg() {
-        return rightDmg;
-    }
-
-    public boolean isLeftDmg() {
-        return leftDmg;
+    public boolean isDamage() {
+        return isDamage;
     }
 }
