@@ -44,11 +44,6 @@ public class GameView extends SurfaceView implements Runnable {
     private float scale;
     private float horizontalOffset;
     private float verticalOffset;
-    
-    
-    //// TODO: 11/20/2017 kiszervezni xml-be 
-    private static final float mapWidth = 1125;
-    private static final float mapHeight = 2000;
 
     public GameView(Context context, Ball ball, Level lvl) {
         super(context);
@@ -72,6 +67,9 @@ public class GameView extends SurfaceView implements Runnable {
     private void calcScale() {
         int screenWidth;
         int screenHeight;
+
+        float mapWidth = level.getWidth();
+        float mapHeight = level.getHeight();
 
         Point size = getScreenSize();
         screenWidth = size.x;

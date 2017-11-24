@@ -7,12 +7,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import java.util.List;
-import nik.uniobuda.hu.balancingball.model.Level;
-import nik.uniobuda.hu.balancingball.util.XmlMapParser;
+
+import nik.uniobuda.hu.balancingball.model.LevelInfo;
+import nik.uniobuda.hu.balancingball.util.XmlLevelParser;
 
 public class LevelsActivity extends AppCompatActivity {
 
-    List<Level> levels;
+    List<LevelInfo> levelInfos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,28 +21,31 @@ public class LevelsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_levels);
 
         initLevels();
+        initLevelInfosView();
+    }
 
-        final LevelsViewAdapter adapter = new LevelsViewAdapter(levels);
+    private void initLevelInfosView() {
+        final LevelInfosViewAdapter adapter = new LevelInfosViewAdapter(levelInfos);
         ListView list = (ListView) findViewById(R.id.listview);
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Level selected = (Level) adapter.getItem(position);
-                openSelectedLevel(selected);
+                LevelInfo selected = (LevelInfo) adapter.getItem(position);
+                openSelectedLevel(selected.getId());
             }
         });
     }
 
-    private void openSelectedLevel(Level selected) {
+    private void openSelectedLevel(String selectedLevelId) {
         Intent i = new Intent(LevelsActivity.this, GameActivity.class);
-        i.putExtra("selectedLevel", selected);
+        i.putExtra("selectedLevelId", selectedLevelId);
         startActivity(i);
     }
 
     private void initLevels() {
-        XmlMapParser parser = new XmlMapParser(this);
-        levels = parser.getParsedMap();
+        XmlLevelParser parser = new XmlLevelParser(this);
+        levelInfos = parser.getParsedLevelInfos();
     }
 }

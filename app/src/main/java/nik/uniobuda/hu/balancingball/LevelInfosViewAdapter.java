@@ -9,16 +9,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import nik.uniobuda.hu.balancingball.model.Level;
+import nik.uniobuda.hu.balancingball.model.LevelInfo;
 
 /**
  * Created by cserof on 11/17/2017.
  */
 
-public class LevelsViewAdapter extends BaseAdapter {
+public class LevelInfosViewAdapter extends BaseAdapter {
 
-    List<Level> items;
+    List<LevelInfo> items;
 
-    public LevelsViewAdapter(List<Level> items) {
+    public LevelInfosViewAdapter(List<LevelInfo> items) {
         this.items = items;
     }
 
@@ -49,8 +50,8 @@ public class LevelsViewAdapter extends BaseAdapter {
         }
 
         TextView levelsTextView = (TextView) myview.findViewById(R.id.lvlNrTextView);
-        Level lvl = (Level) getItem(position);
-        levelsTextView.setText("Level " + lvl.getLevelNumber());
+        LevelInfo lvlInfo = (LevelInfo) getItem(position);
+        levelsTextView.setText(lvlInfo.getName());
 
         return myview;
     }

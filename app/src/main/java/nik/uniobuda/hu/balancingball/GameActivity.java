@@ -6,6 +6,7 @@ import android.os.Bundle;
 import nik.uniobuda.hu.balancingball.logic.SensorController;
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
+import nik.uniobuda.hu.balancingball.util.XmlLevelParser;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -18,7 +19,11 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        lvl = getIntent().getExtras().getParcelable("selectedLevel");
+        String selectedLevelId = getIntent().getExtras().getString("selectedLevelId");
+
+        XmlLevelParser xmlMapParser = new XmlLevelParser(this);
+        lvl = xmlMapParser.getParsedLevel(selectedLevelId);
+
         ball = new Ball(lvl.getStartX(), lvl.getStartY());
         sensor = new SensorController(this, ball);
 

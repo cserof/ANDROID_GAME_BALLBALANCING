@@ -1,5 +1,7 @@
 package nik.uniobuda.hu.balancingball.model;
 
+import android.support.constraint.solver.ArrayRow;
+
 import nik.uniobuda.hu.balancingball.util.Util;
 
 /**
@@ -8,40 +10,30 @@ import nik.uniobuda.hu.balancingball.util.Util;
 
 public class Point3D {
 
-    private double initialX;
-    private double initialY;
-    private double initialZ;
+    private double[][] initialCoords;
+    private double[][] displayedCoords;
 
-    private float displayedX;
-    private float displayedY;
-    private float displayedZ;
+    public Point3D(float x, float y, float z) {
+        this.initialCoords = new double[1][3];
 
-    public Point3D(double x, double y, double z) {
-        this.initialX = x;
-        this.initialY = y;
-        this.initialZ = z;
+        initialCoords[0][0] = x;
+        initialCoords[0][1] = y;
+        initialCoords[0][2] = z;
     }
 
     public float getDisplayedX() {
-        return displayedX;
+        return (float) displayedCoords[0][0];
     }
 
     public float getDisplayedY() {
-        return displayedY;
+        return (float) displayedCoords[0][1];
     }
 
     public float getDisplayedZ() {
-        return displayedZ;
+        return (float) displayedCoords[0][2];
     }
 
     public void calcRotatedCoordinates(double[][] rotationMatrix) {
-        double[][] m = {
-                {initialX,initialY,initialZ}
-        };
-
-        double[][] n =  Util.matrixMultiplication(m, rotationMatrix);
-        displayedX = (float) n[0][0];
-        displayedY = (float) n[0][1];
-        displayedZ = (float) n[0][2];
+        displayedCoords =  Util.matrixMultiplication(initialCoords, rotationMatrix);
     }
 }

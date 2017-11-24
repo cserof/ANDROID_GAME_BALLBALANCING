@@ -1,0 +1,14 @@
+<level>
+	<levelNumber>1</levelNumber>
+	<levelMsg>"Get to the finish line!"</levelMsg>
+	<startX>500</startX>
+	<startY>0</startY>
+	<width>1125</width>
+	<height>2000</height>
+	<mapElements>
+		<mapElement type="WALL" left="225" top="0" right="281.25" bottom="2000" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+		<mapElement type="WALL" left="843.75" top="0" right="900" bottom="2000" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+		<mapElement type="START" left="281.25" top="0" right="843.75" bottom="200" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+		<mapElement type="FINISH" left="281.25" top="1800" right="843.75" bottom="2000" bottomDmg="false" topDmg="false" rightDmg="false" leftDmg="false"/>
+	</mapElements>
+</level>
