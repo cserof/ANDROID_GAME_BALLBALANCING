@@ -1,5 +1,7 @@
 package nik.uniobuda.hu.balancingball.logic;
 
+import java.util.Map;
+
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.MapElement;
@@ -15,11 +17,23 @@ public class CollisionDetector {
     private Level lvl;
     private MapElement lastCollisionObject;
     private boolean justCollided;
+    private boolean isGameLost;
+    private boolean isGameWon;
 
     public CollisionDetector(Ball ball, Level level) {
         this.ball = ball;
         this.lvl = level;
         lastCollisionObject = null;
+        isGameLost = false;
+        isGameWon = false;
+    }
+
+    public boolean isGameLost() {
+        return isGameLost;
+    }
+
+    public boolean isGameWon() {
+        return isGameWon;
     }
 
     public void detect() {
@@ -35,11 +49,17 @@ public class CollisionDetector {
 
     private void iterateElementsToDetect() {
         for (MapElement element : lvl.getMapElements()) {
-            if (isCollided(element)) {
-                switch (element.getType()) {
-                    case WALL:
+            switch (element.getType()) {
+                case WALL:
+                    if (isCollided(element)) {
                         collisionOnWall(element);
-                }
+                    }
+                    break;
+                case FINISH:
+                    if (isIncluded(element)) {
+                        isGameWon = true;
+                    }
+
             }
         }
     }
@@ -49,7 +69,7 @@ public class CollisionDetector {
         lastCollisionObject = element;
 
         if (element.isDamage()) {
-            ball.setDamaged(true);
+            isGameLost = true;
         }
         else {
             boolean isHorizontalCollision = ball.getPositionX() > element.getLeft() &&
@@ -77,5 +97,18 @@ public class CollisionDetector {
                 element.getLeft() <= ballX + ballRadius &&
                 element.getTop() <= ballY + ballRadius &&
                 element.getBottom() >= ballY - ballRadius;
+    }
+
+    private boolean isIncluded(MapElement element) {
+        float ballX = ball.getPositionX();
+        float ballY = ball.getPositionY();
+        float ballRadius = ball.getRadius();
+
+        float overlapForWinning = 0.6f;
+
+        return element.getRight() >= ballX + ballRadius*overlapForWinning &&
+                element.getLeft() <= ballX - ballRadius*overlapForWinning &&
+                element.getTop() <= ballY - ballRadius*overlapForWinning &&
+                element.getBottom() >= ballY + ballRadius*overlapForWinning;
     }
 }

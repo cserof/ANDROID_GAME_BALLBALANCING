@@ -10,17 +10,14 @@ import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-
 import nik.uniobuda.hu.balancingball.logic.CollisionDetector;
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.MapElement;
 import nik.uniobuda.hu.balancingball.model.Point3D;
 
-import static android.widget.Toast.LENGTH_LONG;
+
 
 
 /**
@@ -152,8 +149,11 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        if (ball.isDamaged()) {
-            drawLosingMessage();
+        if (cd.isGameLost()) {
+            drawEndGameMessage("YOU LOST");
+        }
+        else if (cd.isGameWon()) {
+            drawEndGameMessage("YOU WON");
         }
     }
 
@@ -255,7 +255,7 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private void update() {
-        if (!ball.isDamaged()) {
+        if (!cd.isGameLost() && !cd.isGameWon()) {
             if (!cd.isJustCollided()) {
                 ball.accelerate();
             }
@@ -267,7 +267,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    private void drawLosingMessage() {
+    private void drawEndGameMessage(String message) {
         if (surfaceHolder.getSurface().isValid()) {
 
             canvas = surfaceHolder.lockCanvas();
@@ -276,7 +276,7 @@ public class GameView extends SurfaceView implements Runnable {
             int xPos = (canvas.getWidth() / 2);
             int yPos = (int) ((canvas.getHeight() / 2) - ((fillPaint.descent() + fillPaint.ascent()) / 2)) ;
             fillPaint.setTextAlign(Paint.Align.CENTER);
-            canvas.drawText("YOU LOST", xPos, yPos, fillPaint);
+            canvas.drawText(message, xPos, yPos, fillPaint);
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }

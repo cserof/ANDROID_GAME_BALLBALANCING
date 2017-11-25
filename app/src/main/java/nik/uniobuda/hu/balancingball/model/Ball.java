@@ -13,8 +13,6 @@ public class Ball {
     private static final float radius = 50;
     private ArrayList<Point3D> points = new ArrayList<Point3D>();
 
-    private boolean isDamaged;
-
     private float positionX;
     private float positionY;
 
@@ -26,8 +24,6 @@ public class Ball {
     public Ball(float startX, float startY) {
         positionX = startX;
         positionY = startY;
-
-        isDamaged = false;
 
         velocity = new Vector2D(1, 1);
         acceleration = new Vector2D(0, 0);
@@ -52,13 +48,6 @@ public class Ball {
         return points;
     }
 
-    public boolean isDamaged() {
-        return isDamaged;
-    }
-
-    public void setDamaged(boolean damaged) {
-        isDamaged = damaged;
-    }
 
     public void calcRotationMatrix(double[][] rotationMatrix) {
         this.rotationMatrix = Util.matrixMultiplication(this.rotationMatrix,rotationMatrix);
