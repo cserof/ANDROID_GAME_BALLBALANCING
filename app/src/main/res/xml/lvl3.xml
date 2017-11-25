@@ -1,7 +1,7 @@
 <level>
-    <levelNumber>2</levelNumber>
+    <id>lvl3</id>
     <levelMsg>"Get to the finish line!"</levelMsg>
-    <startX>175</startX>
+    <startX>177.5</startX>
     <startY>225</startY>
     <width>1125</width>
     <height>2000</height>

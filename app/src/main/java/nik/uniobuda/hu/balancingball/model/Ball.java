@@ -25,7 +25,7 @@ public class Ball {
         positionX = startX;
         positionY = startY;
 
-        velocity = new Vector2D(1, 1);
+        velocity = new Vector2D(0.1, 0.1);
         acceleration = new Vector2D(0, 0);
 
         createPoints();
@@ -49,7 +49,7 @@ public class Ball {
     }
 
 
-    public void calcRotationMatrix(double[][] rotationMatrix) {
+    public void setNextRotationMatrix(double[][] rotationMatrix) {
         this.rotationMatrix = MatrixOperations.matrixMultiplication(this.rotationMatrix,rotationMatrix);
         for (Point3D point : points) {
             point.calcRotatedCoordinates(this.rotationMatrix);
@@ -70,7 +70,7 @@ public class Ball {
         double[][] m2 = MatrixOperations.calculateRotationMatrix(0,- velocity.getDistance()/radius, 0);
         double[][] m3 = MatrixOperations.calculateRotationMatrix(0, 0, -velocity.getDirection());
 
-        calcRotationMatrix(MatrixOperations.matrixMultiplication(MatrixOperations.matrixMultiplication(m3, m2), m1));
+        setNextRotationMatrix(MatrixOperations.matrixMultiplication(MatrixOperations.matrixMultiplication(m3, m2), m1));
     }
 
     public void calculateForceOnTheBall(float[] orientation) {

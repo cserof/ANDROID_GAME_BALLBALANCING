@@ -59,7 +59,7 @@ public class XmlLevelParser {
         XmlResourceParser xrp = context.getResources().getXml(resourceId);
         int eventType = xrp.getEventType();
 
-        int levelNumber = 0;
+        String id = "";
         float startX = 0;
         float startY = 0;
         float width = 0;
@@ -70,8 +70,8 @@ public class XmlLevelParser {
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
                 String name = xrp.getName();
-                if (name.equals("levelNumber")) {
-                    levelNumber = Integer.parseInt(xrp.nextText());
+                if (name.equals("id")) {
+                    id = String.valueOf(xrp.nextText());
                 }
                 if (name.equals("levelMsg")) {
                     levelMsg = xrp.nextText();
@@ -94,7 +94,7 @@ public class XmlLevelParser {
             }
             eventType = xrp.next();
         }
-        Level lvl = new Level(levelNumber, levelMsg, mapElements, startX, startY, width, height);
+        Level lvl = new Level(id, levelMsg, mapElements, startX, startY, width, height);
         return lvl;
     }
 

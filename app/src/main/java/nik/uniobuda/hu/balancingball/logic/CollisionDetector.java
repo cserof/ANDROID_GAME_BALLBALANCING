@@ -21,6 +21,7 @@ public class CollisionDetector {
         this.ball = ball;
         this.lvl = level;
         lastCollisionObject = null;
+        justCollided = false;
         isGameLost = false;
         isGameWon = false;
     }
@@ -56,7 +57,6 @@ public class CollisionDetector {
                     if (isIncluded(element)) {
                         isGameWon = true;
                     }
-
             }
         }
     }

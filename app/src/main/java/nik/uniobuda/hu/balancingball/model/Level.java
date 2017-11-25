@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public class Level {
-    private int levelNumber;
+    private String id;
     private String levelMsg;
     private float startX;
     private float startY;
@@ -18,8 +18,8 @@ public class Level {
     private float height;
     private ArrayList<MapElement> mapElements;
 
-    public Level(int levelNumber, String levelMsg, ArrayList<MapElement> mapElements, float startX, float startY, float width, float height) {
-        this.levelNumber = levelNumber;
+    public Level(String id, String levelMsg, ArrayList<MapElement> mapElements, float startX, float startY, float width, float height) {
+        this.id = id;
         this.levelMsg = levelMsg;
         this.mapElements = mapElements;
         this.startX = startX;
@@ -40,8 +40,8 @@ public class Level {
         return startY;
     }
 
-    public int getLevelNumber() {
-        return levelNumber;
+    public String getId() {
+        return id;
     }
 
     public String getLevelMsg() {

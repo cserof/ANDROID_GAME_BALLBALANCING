@@ -12,12 +12,12 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import java.util.ArrayList;
 import nik.uniobuda.hu.balancingball.logic.CollisionDetector;
+import nik.uniobuda.hu.balancingball.logic.Stopwatch;
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.MapElement;
 import nik.uniobuda.hu.balancingball.model.Point3D;
-
-
+import nik.uniobuda.hu.balancingball.model.RecordContoller;
 
 
 /**
@@ -31,9 +31,11 @@ public class GameView extends SurfaceView implements Runnable {
     private long fps;
     private long timeThisFrame;
 
+    private Stopwatch stopper;
     private Level level;
     private Ball ball;
     private CollisionDetector cd;
+    private RecordContoller rc;
 
     private Context context;
     private Thread gameThread = null;
@@ -55,8 +57,10 @@ public class GameView extends SurfaceView implements Runnable {
         this.ball = ball;
         this.level = lvl;
         this.cd = new CollisionDetector(ball, level);
+        this.rc = new RecordContoller(this.context);
         surfaceHolder = getHolder();
         playing = true;
+        stopper = new Stopwatch();
         init();
     }
 
@@ -64,6 +68,7 @@ public class GameView extends SurfaceView implements Runnable {
         getScreenSize();
         calcScale();
         initPaints();
+        stopper.startOrReset();
         //surfaceHolder.addCallback(new MyCallback());
     }
 
@@ -156,6 +161,7 @@ public class GameView extends SurfaceView implements Runnable {
         else if (cd.isGameWon()) {
             String won = getResources().getString(R.string.won);
             drawEndGameMessage(won);
+            rc.addTime(level.getId(), stopper.getElapsedTime());
         }
     }
 
@@ -168,11 +174,18 @@ public class GameView extends SurfaceView implements Runnable {
             drawLevelBackground();
             drawMovingObjects();
 
+            drawElapsedTime();
+
             //for testing
-            showDebugInfo();
+            //showDebugInfo();
 
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
+    }
+
+    private void drawElapsedTime() {
+        fillPaint.setTextSize(45);
+        canvas.drawText(stopper.getFormattedElapsedTime(), 20, 60, fillPaint);
     }
 
     private void showDebugInfo() {
