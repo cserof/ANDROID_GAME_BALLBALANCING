@@ -2,7 +2,7 @@ package nik.uniobuda.hu.balancingball.model;
 
 import java.util.ArrayList;
 
-import nik.uniobuda.hu.balancingball.util.Util;
+import nik.uniobuda.hu.balancingball.util.MatrixOperations;
 
 /**
  * Created by cserof on 10/23/2017.
@@ -29,7 +29,7 @@ public class Ball {
         acceleration = new Vector2D(0, 0);
 
         createPoints();
-        rotationMatrix = Util.calculateRotationMatrix(0, 0, 0);
+        rotationMatrix = MatrixOperations.calculateRotationMatrix(0, 0, 0);
     }
 
     public float getPositionX() {
@@ -50,7 +50,7 @@ public class Ball {
 
 
     public void calcRotationMatrix(double[][] rotationMatrix) {
-        this.rotationMatrix = Util.matrixMultiplication(this.rotationMatrix,rotationMatrix);
+        this.rotationMatrix = MatrixOperations.matrixMultiplication(this.rotationMatrix,rotationMatrix);
         for (Point3D point : points) {
             point.calcRotatedCoordinates(this.rotationMatrix);
         }
@@ -66,11 +66,11 @@ public class Ball {
         positionX += velocity.getX();
         positionY += velocity.getY();
 
-        double[][] m1 = Util.calculateRotationMatrix(0, 0, velocity.getDirection());
-        double[][] m2 = Util.calculateRotationMatrix(0,- velocity.getDistance()/radius, 0);
-        double[][] m3 = Util.calculateRotationMatrix(0, 0, -velocity.getDirection());
+        double[][] m1 = MatrixOperations.calculateRotationMatrix(0, 0, velocity.getDirection());
+        double[][] m2 = MatrixOperations.calculateRotationMatrix(0,- velocity.getDistance()/radius, 0);
+        double[][] m3 = MatrixOperations.calculateRotationMatrix(0, 0, -velocity.getDirection());
 
-        calcRotationMatrix(Util.matrixMultiplication(Util.matrixMultiplication(m3, m2), m1));
+        calcRotationMatrix(MatrixOperations.matrixMultiplication(MatrixOperations.matrixMultiplication(m3, m2), m1));
     }
 
     public void calculateForceOnTheBall(float[] orientation) {

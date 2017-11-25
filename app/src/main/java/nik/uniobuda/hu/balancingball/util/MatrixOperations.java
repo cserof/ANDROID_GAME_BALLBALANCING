@@ -4,7 +4,7 @@ package nik.uniobuda.hu.balancingball.util;
  * Created by cserof on 10/23/2017.
  */
 
-public class Util {
+public class MatrixOperations {
 
     public static double[][] calculateRotationMatrix(double x, double y, double z) {
         double[][] m = {

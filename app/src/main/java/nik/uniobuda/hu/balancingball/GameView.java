@@ -150,10 +150,12 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
         if (cd.isGameLost()) {
-            drawEndGameMessage("YOU LOST");
+            String lost = getResources().getString(R.string.lost);
+            drawEndGameMessage(lost);
         }
         else if (cd.isGameWon()) {
-            drawEndGameMessage("YOU WON");
+            String won = getResources().getString(R.string.won);
+            drawEndGameMessage(won);
         }
     }
 

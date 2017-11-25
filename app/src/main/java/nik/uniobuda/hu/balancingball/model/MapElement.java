@@ -1,9 +1,6 @@
 package nik.uniobuda.hu.balancingball.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import nik.uniobuda.hu.balancingball.util.mapType;
+import nik.uniobuda.hu.balancingball.util.MapType;
 
 /**
  * Created by cserof on 11/15/2017.
@@ -14,11 +11,11 @@ public class MapElement {
     float top;
     float right;
     float bottom;
-    mapType type;
+    MapType type;
 
     boolean isDamage;
 
-    public MapElement(float left, float top, float right, float bottom, mapType type, boolean isDamage) {
+    public MapElement(float left, float top, float right, float bottom, MapType type, boolean isDamage) {
         this.left = left;
         this.top = top;
         this.right = right;
@@ -43,7 +40,7 @@ public class MapElement {
         return bottom;
     }
 
-    public mapType getType() {
+    public MapType getType() {
         return type;
     }
 

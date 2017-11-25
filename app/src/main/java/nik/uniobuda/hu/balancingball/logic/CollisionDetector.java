@@ -1,11 +1,8 @@
 package nik.uniobuda.hu.balancingball.logic;
 
-import java.util.Map;
-
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.MapElement;
-import nik.uniobuda.hu.balancingball.util.mapType;
 
 /**
  * Created by cserof on 11/20/2017.

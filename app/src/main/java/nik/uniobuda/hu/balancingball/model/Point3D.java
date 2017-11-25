@@ -1,8 +1,6 @@
 package nik.uniobuda.hu.balancingball.model;
 
-import android.support.constraint.solver.ArrayRow;
-
-import nik.uniobuda.hu.balancingball.util.Util;
+import nik.uniobuda.hu.balancingball.util.MatrixOperations;
 
 /**
  * Created by cserof on 10/23/2017.
@@ -34,6 +32,6 @@ public class Point3D {
     }
 
     public void calcRotatedCoordinates(double[][] rotationMatrix) {
-        displayedCoords =  Util.matrixMultiplication(initialCoords, rotationMatrix);
+        displayedCoords =  MatrixOperations.matrixMultiplication(initialCoords, rotationMatrix);
     }
 }

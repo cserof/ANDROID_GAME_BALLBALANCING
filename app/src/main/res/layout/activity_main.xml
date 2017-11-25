@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="nik.uniobuda.hu.balancingball.MainActivity">
+    tools:context="nik.uniobuda.hu.balancingball.activities.MainActivity">
 
     <TextView
         android:id="@+id/start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="START"
+        android:text="@string/start"
         android:textAlignment="center"
         android:textSize="50sp" />
 
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="40dp"
-        android:text="RECORDS"
+        android:text="@string/records"
         android:textAlignment="center"
         android:textSize="50sp" />
 

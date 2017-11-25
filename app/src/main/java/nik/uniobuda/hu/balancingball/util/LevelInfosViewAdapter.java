@@ -1,4 +1,4 @@
-package nik.uniobuda.hu.balancingball;
+package nik.uniobuda.hu.balancingball.util;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import nik.uniobuda.hu.balancingball.R;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.LevelInfo;
 

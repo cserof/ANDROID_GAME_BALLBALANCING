@@ -1,8 +1,9 @@
-package nik.uniobuda.hu.balancingball;
+package nik.uniobuda.hu.balancingball.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import nik.uniobuda.hu.balancingball.GameView;
 import nik.uniobuda.hu.balancingball.logic.SensorController;
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;

@@ -13,9 +13,9 @@ import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.LevelInfo;
 import nik.uniobuda.hu.balancingball.model.MapElement;
 
-import static nik.uniobuda.hu.balancingball.util.mapType.FINISH;
-import static nik.uniobuda.hu.balancingball.util.mapType.START;
-import static nik.uniobuda.hu.balancingball.util.mapType.WALL;
+import static nik.uniobuda.hu.balancingball.util.MapType.FINISH;
+import static nik.uniobuda.hu.balancingball.util.MapType.START;
+import static nik.uniobuda.hu.balancingball.util.MapType.WALL;
 
 /**
  * Created by cserof on 11/16/2017.
@@ -133,7 +133,7 @@ public class XmlLevelParser {
 
         boolean isDamage = xrp.getAttributeBooleanValue(null, "isDamage",false);
 
-        mapType mt = null;
+        MapType mt = null;
         switch (type) {
             case "WALL" :
                 mt = WALL;
