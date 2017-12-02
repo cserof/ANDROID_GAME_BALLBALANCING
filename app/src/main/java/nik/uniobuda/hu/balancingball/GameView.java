@@ -7,8 +7,11 @@ import android.graphics.Paint;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import java.util.ArrayList;
+
+import nik.uniobuda.hu.balancingball.activities.GameActivity;
 import nik.uniobuda.hu.balancingball.logic.CollisionDetector;
 import nik.uniobuda.hu.balancingball.logic.Stopwatch;
 import nik.uniobuda.hu.balancingball.model.Ball;
@@ -123,6 +126,25 @@ public class GameView extends SurfaceView implements Runnable {
         initPaints();
         stopper.startOrReset();
         playing = true;
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!playing) {
+                    if (collisionDetector.isGameWon()) {
+                        level = ((GameActivity)context).nextLevel();
+                    }
+                    restart();
+                }
+            }
+        });
+    }
+
+    private void restart() {
+        pause();
+        ball.setToStartPosition(level.getStartX(), level.getStartY());
+        stopper.startOrReset();
+        this.collisionDetector = new CollisionDetector(ball, level);
+        resume();
     }
 
     private void initPaints() {

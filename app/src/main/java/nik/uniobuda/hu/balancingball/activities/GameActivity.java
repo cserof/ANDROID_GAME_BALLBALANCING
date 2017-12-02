@@ -13,22 +13,21 @@ public class GameActivity extends AppCompatActivity {
 
     private GameView gameView;
     private Ball ball;
-    private Level lvl;
+    private Level level;
     private SensorController sensor;
+    private XmlLevelParser xmlMapParser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         String selectedLevelId = getIntent().getExtras().getString("selectedLevelId");
+        xmlMapParser = new XmlLevelParser(this);
 
-        XmlLevelParser xmlMapParser = new XmlLevelParser(this);
-        lvl = xmlMapParser.getParsedLevel(selectedLevelId);
-
-        ball = new Ball(lvl.getStartX(), lvl.getStartY());
+        level = createLevel(selectedLevelId);
+        ball = new Ball(level.getStartX(), level.getStartY());
         sensor = new SensorController(this, ball);
-
-        gameView = new GameView(this, ball, lvl);
+        gameView = new GameView(this, ball, level);
         setContentView(gameView);
     }
 
@@ -49,5 +48,21 @@ public class GameActivity extends AppCompatActivity {
         sensor.unregisterSensors();
     }
 
+    public Level createLevel(String levelId) {
+        return xmlMapParser.getParsedLevel(levelId);
+    }
 
+    public Level nextLevel() {
+        String nextLevelId = level.getNextLevelId();
+        if (nextLevelId.equals("gameCompleted")) {
+            congrats();
+        }
+        else {
+            level = createLevel(nextLevelId);
+        }
+        return level;
+    }
+
+    private void congrats() {
+    }
 }

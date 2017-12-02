@@ -12,15 +12,17 @@ import java.util.ArrayList;
 public class Level {
     private String id;
     private String levelMsg;
+    private String nextLevelId;
     private float startX;
     private float startY;
     private float width;
     private float height;
     private ArrayList<MapElement> mapElements;
 
-    public Level(String id, String levelMsg, ArrayList<MapElement> mapElements, float startX, float startY, float width, float height) {
+    public Level(String id, String levelMsg, String nextLevelId, ArrayList<MapElement> mapElements, float startX, float startY, float width, float height) {
         this.id = id;
         this.levelMsg = levelMsg;
+        this.nextLevelId = nextLevelId;
         this.mapElements = mapElements;
         this.startX = startX;
         this.startY = startY;
@@ -46,6 +48,10 @@ public class Level {
 
     public String getLevelMsg() {
         return levelMsg;
+    }
+
+    public String getNextLevelId() {
+        return nextLevelId;
     }
 
     public float getWidth() {

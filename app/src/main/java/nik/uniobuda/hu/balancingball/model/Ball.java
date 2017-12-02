@@ -22,14 +22,8 @@ public class Ball {
     private double[][] rotationMatrix;
 
     public Ball(float startX, float startY) {
-        positionX = startX;
-        positionY = startY;
-
-        velocity = new Vector2D(0.1, 0.1);
-        acceleration = new Vector2D(0, 0);
-
+        setToStartPosition(startX, startY);
         createPoints();
-        rotationMatrix = MatrixOperations.calculateRotationMatrix(0, 0, 0);
     }
 
     public float getPositionX() {
@@ -101,5 +95,15 @@ public class Ball {
         points.add(new Point3D(0, radius, 0));
         points.add(new Point3D(0, 0, -radius));
         points.add(new Point3D(0, 0, radius));
+    }
+
+    public void setToStartPosition(float startX, float startY) {
+        positionX = startX;
+        positionY = startY;
+
+        velocity = new Vector2D(0.1, 0.1);
+        acceleration = new Vector2D(0, 0);
+
+        rotationMatrix = MatrixOperations.calculateRotationMatrix(0, 0, 0);
     }
 }

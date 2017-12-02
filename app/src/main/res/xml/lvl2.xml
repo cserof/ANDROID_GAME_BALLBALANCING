@@ -1,6 +1,7 @@
 <level>
     <id>lvl2</id>
     <levelMsg>"Get to the finish line!"</levelMsg>
+    <nextLevelId>lvl3</nextLevelId>
     <startX>177.5</startX>
     <startY>225</startY>
     <width>1125</width>

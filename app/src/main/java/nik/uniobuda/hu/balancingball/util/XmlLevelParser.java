@@ -67,6 +67,7 @@ public class XmlLevelParser {
         float width = 0;
         float height = 0;
         String levelMsg = "";
+        String nextLevelId = "";
         ArrayList<MapElement> mapElements = new ArrayList<MapElement>();
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -77,6 +78,9 @@ public class XmlLevelParser {
                 }
                 if (name.equals("levelMsg")) {
                     levelMsg = xrp.nextText();
+                }
+                if (name.equals("nextLevelId")) {
+                    nextLevelId = xrp.nextText();
                 }
                 if (name.equals("startX")) {
                     startX = Float.parseFloat(xrp.nextText());
@@ -96,7 +100,7 @@ public class XmlLevelParser {
             }
             eventType = xrp.next();
         }
-        Level lvl = new Level(id, levelMsg, mapElements, startX, startY, width, height);
+        Level lvl = new Level(id, levelMsg, nextLevelId, mapElements, startX, startY, width, height);
         return lvl;
     }
 
