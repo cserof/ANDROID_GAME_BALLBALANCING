@@ -6,6 +6,7 @@ package nik.uniobuda.hu.balancingball.util;
 
 public class MatrixOperations {
 
+    //http://planning.cs.uiuc.edu/node102.html
     public static double[][] calculateRotationMatrix(double x, double y, double z) {
         double[][] m = {
                 {Math.cos(y)*Math.cos(z),    Math.sin(x)*Math.sin(y)*Math.cos(z)-Math.cos(x)*Math.sin(z),    Math.sin(x)*Math.sin(z)+Math.cos(x)*Math.sin(y)*Math.cos(z)    },

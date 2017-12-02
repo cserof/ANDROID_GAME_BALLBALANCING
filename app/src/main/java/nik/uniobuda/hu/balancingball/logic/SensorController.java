@@ -12,6 +12,7 @@ import static android.content.Context.SENSOR_SERVICE;
 
 /**
  * Created by cserof on 11/15/2017.
+ * https://stackoverflow.com/questions/20339942/get-device-angle-by-using-getorientation-function
  */
 
 public class SensorController {

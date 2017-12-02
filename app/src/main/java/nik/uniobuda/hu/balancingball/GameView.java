@@ -4,12 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.util.Log;
-import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.WindowManager;
+
 import java.util.ArrayList;
 import nik.uniobuda.hu.balancingball.logic.CollisionDetector;
 import nik.uniobuda.hu.balancingball.logic.Stopwatch;
@@ -17,11 +15,13 @@ import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.MapElement;
 import nik.uniobuda.hu.balancingball.model.Point3D;
-import nik.uniobuda.hu.balancingball.model.RecordContoller;
+import nik.uniobuda.hu.balancingball.logic.HighScoreContoller;
 
 
 /**
  * Created by cserof on 11/12/2017.
+ * gameView:
+ * https://forum.xda-developers.com/android/software/tutorial-create-running-game-animation-t3473191
  */
 
 public class GameView extends SurfaceView implements Runnable {
@@ -34,8 +34,8 @@ public class GameView extends SurfaceView implements Runnable {
     private Stopwatch stopper;
     private Level level;
     private Ball ball;
-    private CollisionDetector cd;
-    private RecordContoller rc;
+    private CollisionDetector collisionDetector;
+    private HighScoreContoller highScoreContoller;
 
     private Context context;
     private Thread gameThread = null;
@@ -56,79 +56,12 @@ public class GameView extends SurfaceView implements Runnable {
         this.context = context;
         this.ball = ball;
         this.level = lvl;
-        this.cd = new CollisionDetector(ball, level);
-        this.rc = new RecordContoller(this.context);
+        this.collisionDetector = new CollisionDetector(ball, level);
+        this.highScoreContoller = new HighScoreContoller(this.context);
         surfaceHolder = getHolder();
-        playing = true;
         stopper = new Stopwatch();
         init();
     }
-
-    private void init() {
-        getScreenSize();
-        calcScale();
-        initPaints();
-        stopper.startOrReset();
-        //surfaceHolder.addCallback(new MyCallback());
-    }
-
-    private void initPaints() {
-        fillPaint = new Paint();
-        fillPaint.setStyle(Paint.Style.FILL);
-
-        strokePaint = new Paint();
-        strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setColor(Color.BLACK);
-    }
-
-    private void calcScale() {
-        int screenWidth;
-        int screenHeight;
-
-        float mapWidth = level.getWidth();
-        float mapHeight = level.getHeight();
-
-        Point size = getScreenSize();
-        screenWidth = size.x;
-        screenHeight = size.y;
-
-        float mapRatio = mapWidth / mapHeight;
-        float screenRatio = screenWidth / screenHeight;
-
-        verticalOffset = 0;
-        horizontalOffset = 0;
-
-        if (mapRatio > screenRatio) {
-            scale = screenWidth / mapWidth;
-            verticalOffset = (screenHeight - scale*mapHeight)/2;
-        }
-        else {
-            scale = screenWidth / mapHeight;
-            horizontalOffset = (screenWidth - scale*mapWidth)/2;
-        }
-    }
-
-    //// TODO: 11/16/2017
-    //statikus részeket csak egyszer induláskor - de legalább ne számolja ki minden ciklusban
-    // https://stackoverflow.com/questions/11490711/android-holder-getsurface-always-return-null
-    /*public class MyCallback implements SurfaceHolder.Callback {
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format,
-                                   int width, int height) {
-        }
-
-        @Override
-        public void surfaceCreated(SurfaceHolder holder) {
-            drawLevelBackground();
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            // and here you need to stop it
-        }
-
-    }
-*/
 
     @Override
     public void run() {
@@ -154,30 +87,94 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        if (cd.isGameLost()) {
+        if (collisionDetector.isGameLost()) {
             String lost = getResources().getString(R.string.lost);
             drawEndGameMessage(lost);
         }
-        else if (cd.isGameWon()) {
+        else if (collisionDetector.isGameWon()) {
             String won = getResources().getString(R.string.won);
             drawEndGameMessage(won);
-            rc.addTime(level.getId(), stopper.getElapsedTime());
+            highScoreContoller.addTime(level.getId(), stopper.getElapsedTime());
+        }
+    }
+
+    public void pause() {
+        playing = false;
+        try {
+            gameThread.join();
+        } catch (InterruptedException e) {
+            Log.e("Error:", "joining thread");
+        }
+    }
+
+    public void resume() {
+        playing = true;
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        calcScale(w, h);
+    }
+
+    private void init() {
+        initPaints();
+        stopper.startOrReset();
+        playing = true;
+    }
+
+    private void initPaints() {
+        fillPaint = new Paint();
+        fillPaint.setStyle(Paint.Style.FILL);
+
+        strokePaint = new Paint();
+        strokePaint.setStyle(Paint.Style.STROKE);
+        strokePaint.setColor(Color.BLACK);
+    }
+
+    private void calcScale(int w, int h) {
+        float mapWidth = level.getWidth();
+        float mapHeight = level.getHeight();
+
+        float mapRatio = mapWidth / mapHeight;
+        float screenRatio = w/h;
+
+        verticalOffset = 0;
+        horizontalOffset = 0;
+
+        if (mapRatio > screenRatio) {
+            scale = w / mapWidth;
+            verticalOffset = (h - scale*mapHeight)/2;
+        }
+        else {
+            scale = w / mapHeight;
+            horizontalOffset = (h - scale*mapWidth)/2;
+        }
+    }
+
+    private void update() {
+        if (!collisionDetector.isGameLost() && !collisionDetector.isGameWon()) {
+            if (!collisionDetector.isJustCollided()) {
+                ball.accelerate();
+            }
+            ball.roll();
+            collisionDetector.detect();
+        }
+        else {
+            playing = false;
         }
     }
 
     private void draw() {
         if (surfaceHolder.getSurface().isValid()) {
-
             canvas = surfaceHolder.lockCanvas();
             canvas.drawColor(Color.WHITE);
 
             drawLevelBackground();
             drawMovingObjects();
-
             drawElapsedTime();
-
-            //for testing
-            //showDebugInfo();
 
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
@@ -213,13 +210,15 @@ public class GameView extends SurfaceView implements Runnable {
 
         fillPaint.setColor(Color.BLACK);
 
+        float dotSize = 3;
+
         ArrayList<Point3D> points = ball.getPoints();
         for (Point3D point : points) {
             if (point.getDisplayedZ() > 0) {
                 canvas.drawCircle(
                         drawnX + point.getDisplayedX()*scale,
                         drawnY + point.getDisplayedY()*scale,
-                        3,
+                        dotSize*scale,
                         fillPaint);
             }
         }
@@ -260,28 +259,6 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    private Point getScreenSize() {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        return size;
-    }
-
-
-    private void update() {
-        if (!cd.isGameLost() && !cd.isGameWon()) {
-            if (!cd.isJustCollided()) {
-                ball.accelerate();
-            }
-            ball.roll();
-            cd.detect();
-        }
-        else {
-            playing = false;
-        }
-    }
-
     private void drawEndGameMessage(String message) {
         if (surfaceHolder.getSurface().isValid()) {
 
@@ -296,18 +273,5 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void pause() {
-        playing = false;
-        try {
-            gameThread.join();
-        } catch (InterruptedException e) {
-            Log.e("Error:", "joining thread");
-        }
-    }
 
-    public void resume() {
-        playing = true;
-        gameThread = new Thread(this);
-        gameThread.start();
-    }
 }

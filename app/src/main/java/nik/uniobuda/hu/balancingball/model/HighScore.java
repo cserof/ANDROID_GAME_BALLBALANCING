@@ -1,14 +1,14 @@
-package nik.uniobuda.hu.balancingball.util;
+package nik.uniobuda.hu.balancingball.model;
 
 /**
  * Created by cserof on 11/25/2017.
  */
 
-public class Record {
+public class HighScore {
     String id;
     long bestTime;
 
-    public Record(String id, long bestTime) {
+    public HighScore(String id, long bestTime) {
         this.id = id;
         this.bestTime = bestTime;
     }

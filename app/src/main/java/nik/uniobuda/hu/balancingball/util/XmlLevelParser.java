@@ -19,6 +19,8 @@ import static nik.uniobuda.hu.balancingball.util.MapType.WALL;
 
 /**
  * Created by cserof on 11/16/2017.
+ * xml parsing:
+ * https://www.ibm.com/developerworks/xml/library/x-android/
  */
 
 public class XmlLevelParser {

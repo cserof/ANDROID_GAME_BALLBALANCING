@@ -1,7 +1,6 @@
-package nik.uniobuda.hu.balancingball.model;
+package nik.uniobuda.hu.balancingball.logic;
 
 import android.content.Context;
-import android.content.res.XmlResourceParser;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -18,54 +17,55 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import nik.uniobuda.hu.balancingball.util.Record;
+import nik.uniobuda.hu.balancingball.model.HighScore;
 
 /**
  * Created by cserof on 11/25/2017.
  */
 
-public class RecordContoller {
+public class HighScoreContoller {
 
-    HashMap<String, Record> records;
+    HashMap<String, HighScore> highScores;
     Context context;
 
-    public RecordContoller(Context context) {
+    public HighScoreContoller(Context context) {
         this.context = context;
-        initRecords();
+        initHighScores();
     }
 
     public void addTime(String levelId, long time) {
-        if (!records.containsKey(levelId)) {
-            records.put(levelId, new Record(levelId, time));
+        if (!highScores.containsKey(levelId)) {
+            highScores.put(levelId, new HighScore(levelId, time));
             String xml = writeToXml();
             saveRecordsToFile(xml);
         }
-        else if (time < records.get(levelId).getBestTime()) {
-            records.get(levelId).setBestTime(time);
+        else if (time < highScores.get(levelId).getBestTime()) {
+            highScores.get(levelId).setBestTime(time);
             String xml = writeToXml();
             saveRecordsToFile(xml);
         }
     }
 
+    //https://www.ibm.com/developerworks/xml/library/x-android/
     private String writeToXml() {
         XmlSerializer serializer = Xml.newSerializer();
         StringWriter writer = new StringWriter();
         try {
             serializer.setOutput(writer);
             serializer.startDocument("UTF-8", true);
-            serializer.startTag("", "records");
+            serializer.startTag("", "highScores");
 
-            Iterator it = records.entrySet().iterator();
+            Iterator it = highScores.entrySet().iterator();
             while (it.hasNext()) {
-                HashMap.Entry<String, Record> pair = (HashMap.Entry<String, Record>)it.next();
+                HashMap.Entry<String, HighScore> pair = (HashMap.Entry<String, HighScore>)it.next();
 
-                serializer.startTag("", "record");
+                serializer.startTag("", "highScore");
                 serializer.attribute("", "id", pair.getKey());
                 serializer.attribute("", "bestTime",String.valueOf(pair.getValue().getBestTime()));
-                serializer.endTag("", "record");
+                serializer.endTag("", "highScore");
                 it.remove();
             }
-            serializer.endTag("", "records");
+            serializer.endTag("", "highScores");
             serializer.endDocument();
 
             } catch (IOException e) {
@@ -76,7 +76,7 @@ public class RecordContoller {
 
     private void saveRecordsToFile(String xml) {
         try {
-            FileOutputStream fos = context.openFileOutput("records", context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput("highScores", context.MODE_PRIVATE);
             fos.write(xml.getBytes());
             fos.close();
         } catch (FileNotFoundException e) {
@@ -87,13 +87,13 @@ public class RecordContoller {
     }
 
 
-    private void initRecords() {
-        records = new HashMap<String, Record>();
-        String file = openRecordsFromFile();
-        parseRecords(file);
+    private void initHighScores() {
+        highScores = new HashMap<String, HighScore>();
+        String file = openHighScoresFromFile();
+        parseHighScores(file);
     }
 
-    private void parseRecords(String file) {
+    private void parseHighScores(String file) {
         try {
             XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
             parser.setInput(new StringReader(file));
@@ -103,9 +103,9 @@ public class RecordContoller {
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_TAG) {
                     String name = parser.getName();
-                    if (name.equals("record")) {
-                        Record rec = parseRecord(parser);
-                        records.put(rec.getId(), rec);
+                    if (name.equals("highScore")) {
+                        HighScore rec = parseRecord(parser);
+                        highScores.put(rec.getId(), rec);
                     }
                 }
                 eventType = parser.next();
@@ -117,16 +117,16 @@ public class RecordContoller {
         }
     }
 
-    private Record parseRecord(XmlPullParser parser) {
+    private HighScore parseRecord(XmlPullParser parser) {
         String id =  parser.getAttributeValue(null, "id");
         long bestTime = Long.parseLong(parser.getAttributeValue(null, "bestTime"));
-        return new Record(id, bestTime);
+        return new HighScore(id, bestTime);
     }
 
-    private String openRecordsFromFile() {
+    private String openHighScoresFromFile() {
         StringBuilder sb = new StringBuilder();
         try {
-            FileInputStream fis = context.openFileInput("records");
+            FileInputStream fis = context.openFileInput("highScores");
             byte[] buffer = new byte[1024];
             int length;
 
@@ -142,10 +142,10 @@ public class RecordContoller {
         return sb.toString();
     }
 
-    public long getRecord(String id) {
+    public long getHighScore(String id) {
         long time;
-        if (records.containsKey(id)) {
-            time = records.get(id).getBestTime();
+        if (highScores.containsKey(id)) {
+            time = highScores.get(id).getBestTime();
         }
         else {
             time = 0;

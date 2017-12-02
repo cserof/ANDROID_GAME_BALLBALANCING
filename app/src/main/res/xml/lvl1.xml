@@ -1,14 +1,15 @@
 <level>
 	<id>lvl1</id>
 	<levelMsg>"Get to the finish line!"</levelMsg>
-	<startX>500</startX>
-	<startY>0</startY>
+	<startX>562.25</startX>
+	<startY>168.75</startY>
 	<width>1125</width>
 	<height>2000</height>
 	<mapElements>
 		<mapElement type="WALL" left="225" top="0" right="281.25" bottom="2000" isDamage="false"/>
+		<mapElement type="WALL" left="281.25" top="0" right="900" bottom="56.25" isDamage="false"/>
 		<mapElement type="WALL" left="843.75" top="0" right="900" bottom="2000" isDamage="false"/>
-		<mapElement type="START" left="281.25" top="0" right="843.75" bottom="200" isDamage="false"/>
+		<mapElement type="START" left="281.25" top="56.25" right="843.75" bottom="256.25" isDamage="false"/>
 		<mapElement type="FINISH" left="281.25" top="1800" right="843.75" bottom="2000" isDamage="false"/>
 	</mapElements>
 </level>
