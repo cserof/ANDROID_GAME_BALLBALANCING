@@ -6,11 +6,12 @@ import android.widget.Toast;
 
 import nik.uniobuda.hu.balancingball.GameView;
 import nik.uniobuda.hu.balancingball.logic.CollisionDetector;
-import nik.uniobuda.hu.balancingball.logic.HighScoreContoller;
+import nik.uniobuda.hu.balancingball.logic.HighScoreController;
 import nik.uniobuda.hu.balancingball.logic.SensorController;
 import nik.uniobuda.hu.balancingball.logic.Stopwatch;
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
+import nik.uniobuda.hu.balancingball.util.MapState;
 import nik.uniobuda.hu.balancingball.util.XmlLevelParser;
 
 public class GameActivity extends AppCompatActivity {
@@ -21,8 +22,31 @@ public class GameActivity extends AppCompatActivity {
     private SensorController sensor;
     private Stopwatch stopper;
     private CollisionDetector collisionDetector;
-    private HighScoreContoller highScoreContoller;
+    private HighScoreController highScoreContoller;
     private XmlLevelParser xmlMapParser;
+    private MapState mapState;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        String selectedLevelId = getIntent().getExtras().getString("selectedLevelId");
+        xmlMapParser = new XmlLevelParser(this);
+
+        level = createLevel(selectedLevelId);
+        ball = new Ball(level.getStartX(), level.getStartY());
+        sensor = new SensorController(this, ball);
+        collisionDetector = new CollisionDetector(this, ball, level);
+        highScoreContoller = new HighScoreController(this);
+        stopper = new Stopwatch();
+        gameView = new GameView(this);
+        setContentView(gameView);
+        mapState = MapState.STATE0;
+    }
+
+    public MapState getMapState() {
+        return mapState;
+    }
 
     public Ball getBall() {
         return ball;
@@ -60,21 +84,13 @@ public class GameActivity extends AppCompatActivity {
         return stopper.getFormattedElapsedTime();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        String selectedLevelId = getIntent().getExtras().getString("selectedLevelId");
-        xmlMapParser = new XmlLevelParser(this);
-
-        level = createLevel(selectedLevelId);
-        ball = new Ball(level.getStartX(), level.getStartY());
-        sensor = new SensorController(this, ball);
-        collisionDetector = new CollisionDetector(ball, level);
-        highScoreContoller = new HighScoreContoller(this);
-        stopper = new Stopwatch();
-        gameView = new GameView(this);
-        setContentView(gameView);
+    public void changeMapState() {
+        if (mapState == MapState.STATE0) {
+            mapState = MapState.STATE1;
+        }
+        else {
+            mapState = MapState.STATE0;
+        }
     }
 
     public void nextLevel() {
@@ -91,8 +107,9 @@ public class GameActivity extends AppCompatActivity {
         gameView.pause();
         ball.setToStartPosition(level.getStartX(), level.getStartY());
         stopper.startOrReset();
-        collisionDetector = new CollisionDetector(ball, level);
-        highScoreContoller = new HighScoreContoller(this);
+        mapState = MapState.STATE0;
+        collisionDetector = new CollisionDetector(this, ball, level);
+        highScoreContoller = new HighScoreController(this);
         gameView.resume();
         showLevelMessage();
     }

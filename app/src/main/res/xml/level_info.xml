@@ -3,4 +3,5 @@
     <level id="lvl2" name="Level 2"></level>
     <level id="lvl3" name="Level 3"></level>
     <level id="lvl4" name="Level 4"></level>
+    <level id="lvl5" name="Level 5"></level>
 </levels>

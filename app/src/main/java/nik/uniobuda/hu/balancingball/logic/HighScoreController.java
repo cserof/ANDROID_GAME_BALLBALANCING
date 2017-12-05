@@ -24,12 +24,12 @@ import nik.uniobuda.hu.balancingball.util.TimeFormatter;
  * Created by cserof on 11/25/2017.
  */
 
-public class HighScoreContoller {
+public class HighScoreController {
 
     private HashMap<String, Highscore> highScores;
     private Context context;
 
-    public HighScoreContoller(Context context) {
+    public HighScoreController(Context context) {
         this.context = context;
         initHighScores();
     }

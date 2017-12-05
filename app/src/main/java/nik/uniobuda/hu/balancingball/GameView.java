@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import nik.uniobuda.hu.balancingball.activities.GameActivity;
 import nik.uniobuda.hu.balancingball.model.MapElement;
 import nik.uniobuda.hu.balancingball.model.Point3D;
+import nik.uniobuda.hu.balancingball.model.StateDependentElement;
 import nik.uniobuda.hu.balancingball.util.Palette;
 
 
@@ -115,6 +116,9 @@ public class GameView extends SurfaceView implements Runnable {
                         gameContext.nextLevel();
                     }
                     gameContext.restart();
+                }
+                else {
+                    gameContext.changeMapState();
                 }
             }
         });
@@ -220,36 +224,40 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void drawLevelBackground() {
         for (MapElement element : gameContext.getLevel().getMapElements()) {
-            switch (element.getType()) {
-                case FINISH :
-                    fillPaint.setColor(palette.getColorFinish());
-                    break;
-                case START:
-                    fillPaint.setColor(palette.getColorStart());
-                    break;
-                case WALL:
-                    if (element.isDamage()) {
-                        fillPaint.setColor(palette.getColorDamagingWall());
-                    }
-                    else {
-                        fillPaint.setColor(palette.getColorWall());
-                    }
-                    break;
+            if (
+                    !(element instanceof StateDependentElement) ||
+                    ((StateDependentElement) element).getState() == gameContext.getMapState()
+                    ) {
+                switch (element.getType()) {
+                    case FINISH:
+                        fillPaint.setColor(palette.getColorFinish());
+                        break;
+                    case START:
+                        fillPaint.setColor(palette.getColorStart());
+                        break;
+                    case WALL:
+                        if (element.isDamage()) {
+                            fillPaint.setColor(palette.getColorDamagingWall());
+                        } else {
+                            fillPaint.setColor(palette.getColorWall());
+                        }
+                        break;
+                }
+                canvas.drawRect(
+                        element.getLeft() * scale + horizontalOffset,
+                        element.getTop() * scale + verticalOffset,
+                        element.getRight() * scale + horizontalOffset,
+                        element.getBottom() * scale + verticalOffset,
+                        fillPaint
+                );
+                canvas.drawRect(
+                        element.getLeft() * scale + horizontalOffset,
+                        element.getTop() * scale + verticalOffset,
+                        element.getRight() * scale + horizontalOffset,
+                        element.getBottom() * scale + verticalOffset,
+                        strokePaint
+                );
             }
-            canvas.drawRect(
-                    element.getLeft()*scale + horizontalOffset,
-                    element.getTop()*scale + verticalOffset,
-                    element.getRight()*scale + horizontalOffset,
-                    element.getBottom()*scale + verticalOffset,
-                    fillPaint
-            );
-            canvas.drawRect(
-                    element.getLeft()*scale + horizontalOffset,
-                    element.getTop()*scale + verticalOffset,
-                    element.getRight()*scale + horizontalOffset,
-                    element.getBottom()*scale + verticalOffset,
-                    strokePaint
-            );
         }
     }
 

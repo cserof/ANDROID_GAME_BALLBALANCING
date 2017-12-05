@@ -12,10 +12,11 @@ import nik.uniobuda.hu.balancingball.R;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.LevelInfo;
 import nik.uniobuda.hu.balancingball.model.MapElement;
+import nik.uniobuda.hu.balancingball.model.StateDependentElement;
 
-import static nik.uniobuda.hu.balancingball.util.MapType.FINISH;
-import static nik.uniobuda.hu.balancingball.util.MapType.START;
-import static nik.uniobuda.hu.balancingball.util.MapType.WALL;
+import static nik.uniobuda.hu.balancingball.util.MapElementType.FINISH;
+import static nik.uniobuda.hu.balancingball.util.MapElementType.START;
+import static nik.uniobuda.hu.balancingball.util.MapElementType.WALL;
 
 /**
  * Created by cserof on 11/16/2017.
@@ -97,6 +98,9 @@ public class XmlLevelParser {
                 if (name.equals("mapElement")) {
                     mapElements.add(parseLevelElement(xrp));
                 }
+                if (name.equals("stateDependentElements")) {
+                    mapElements.add(parseStateDependentElement(xrp));
+                }
             }
             eventType = xrp.next();
         }
@@ -139,7 +143,7 @@ public class XmlLevelParser {
 
         boolean isDamage = xrp.getAttributeBooleanValue(null, "isDamage",false);
 
-        MapType mt = null;
+        MapElementType mt = null;
         switch (type) {
             case "WALL" :
                 mt = WALL;
@@ -154,5 +158,43 @@ public class XmlLevelParser {
                 break;
         }
         return new MapElement(left,top,right, bottom,mt, isDamage);
+    }
+
+    private StateDependentElement parseStateDependentElement(XmlResourceParser xrp) {
+        float left = Float.parseFloat(xrp.getAttributeValue(null, "left"));
+        float top = Float.parseFloat(xrp.getAttributeValue(null, "top"));
+        float right = Float.parseFloat(xrp.getAttributeValue(null, "right"));
+        float bottom = Float.parseFloat(xrp.getAttributeValue(null, "bottom"));
+        String type = xrp.getAttributeValue(null, "type");
+        String state = xrp.getAttributeValue(null, "state");
+        boolean isDamage = xrp.getAttributeBooleanValue(null, "isDamage",false);
+
+        MapElementType mt = null;
+        switch (type) {
+            case "WALL" :
+                mt = WALL;
+                break;
+            case "START":
+                mt = START;
+                break;
+            case "FINISH":
+                mt = FINISH;
+                break;
+            default:
+                break;
+        }
+
+        MapState ms = null;
+        switch (state) {
+            case "STATE0":
+                ms = MapState.STATE0;
+                break;
+            case "STATE1":
+                ms = MapState.STATE1;
+                break;
+            default:
+                break;
+        }
+        return new StateDependentElement(left,top,right, bottom,mt, isDamage, ms);
     }
 }

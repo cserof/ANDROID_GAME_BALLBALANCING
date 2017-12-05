@@ -1,8 +1,12 @@
 package nik.uniobuda.hu.balancingball.logic;
 
+import android.content.Context;
+
+import nik.uniobuda.hu.balancingball.activities.GameActivity;
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.MapElement;
+import nik.uniobuda.hu.balancingball.model.StateDependentElement;
 
 /**
  * Created by cserof on 11/20/2017.
@@ -16,8 +20,10 @@ public class CollisionDetector {
     private boolean justCollided;
     private boolean isGameLost;
     private boolean isGameWon;
+    private GameActivity gameContext;
 
-    public CollisionDetector(Ball ball, Level level) {
+    public CollisionDetector(Context context, Ball ball, Level level) {
+        this.gameContext = (GameActivity) context;
         this.ball = ball;
         this.lvl = level;
         lastCollisionObject = null;
@@ -47,16 +53,23 @@ public class CollisionDetector {
 
     private void iterateElementsToDetect() {
         for (MapElement element : lvl.getMapElements()) {
-            switch (element.getType()) {
-                case WALL:
-                    if (isCollided(element)) {
-                        collisionOnWall(element);
-                    }
-                    break;
-                case FINISH:
-                    if (isIncluded(element)) {
-                        isGameWon = true;
-                    }
+            if (!(element instanceof StateDependentElement) ||
+                    ((StateDependentElement) element).getState() == gameContext.getMapState()
+                    ) {
+                switch (element.getType()) {
+                    case WALL:
+                        if (isCollided(element)) {
+                            collisionOnWall(element);
+                        }
+                        break;
+                    case FINISH:
+                        if (isIncluded(element)) {
+                            isGameWon = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

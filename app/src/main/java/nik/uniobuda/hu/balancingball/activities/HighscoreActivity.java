@@ -8,7 +8,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 import nik.uniobuda.hu.balancingball.R;
-import nik.uniobuda.hu.balancingball.logic.HighScoreContoller;
+import nik.uniobuda.hu.balancingball.logic.HighScoreController;
 import nik.uniobuda.hu.balancingball.model.LevelInfo;
 import nik.uniobuda.hu.balancingball.util.XmlLevelParser;
 
@@ -32,7 +32,7 @@ public class HighscoreActivity extends AppCompatActivity {
 
     private void getHighScores() {
         int maxLength = getLevelNameMaxLength();
-        HighScoreContoller highScoreContoller = new HighScoreContoller(this);
+        HighScoreController highScoreContoller = new HighScoreController(this);
         for (LevelInfo level : levelInfos) {
             int nameLength = maxLength - level.getName().length();
             String padding = "";

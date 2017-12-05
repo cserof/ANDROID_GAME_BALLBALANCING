@@ -1,6 +1,6 @@
 package nik.uniobuda.hu.balancingball.model;
 
-import nik.uniobuda.hu.balancingball.util.MapType;
+import nik.uniobuda.hu.balancingball.util.MapElementType;
 
 /**
  * Created by cserof on 11/15/2017.
@@ -11,11 +11,11 @@ public class MapElement {
     private float top;
     private float right;
     private float bottom;
-    private MapType type;
+    private MapElementType type;
 
     boolean isDamage;
 
-    public MapElement(float left, float top, float right, float bottom, MapType type, boolean isDamage) {
+    public MapElement(float left, float top, float right, float bottom, MapElementType type, boolean isDamage) {
         this.left = left;
         this.top = top;
         this.right = right;
@@ -40,7 +40,7 @@ public class MapElement {
         return bottom;
     }
 
-    public MapType getType() {
+    public MapElementType getType() {
         return type;
     }
 
