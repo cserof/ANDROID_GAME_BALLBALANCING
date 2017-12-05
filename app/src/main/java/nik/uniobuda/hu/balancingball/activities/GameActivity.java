@@ -59,14 +59,6 @@ public class GameActivity extends AppCompatActivity {
         return stopper.getFormattedElapsedTime();
     }
 
-    public void restart() {
-        gameView.pause();
-        ball.setToStartPosition(level.getStartX(), level.getStartY());
-        stopper.startOrReset();
-        collisionDetector = new CollisionDetector(ball, level);
-        gameView.resume();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +74,25 @@ public class GameActivity extends AppCompatActivity {
         stopper = new Stopwatch();
         gameView = new GameView(this);
         setContentView(gameView);
+    }
+
+    public void nextLevel() {
+        String nextLevelId = level.getNextLevelId();
+        if (nextLevelId.equals("gameCompleted")) {
+            congrats();
+        }
+        else {
+            level = createLevel(nextLevelId);
+        }
+    }
+
+    public void restart() {
+        gameView.pause();
+        ball.setToStartPosition(level.getStartX(), level.getStartY());
+        stopper.startOrReset();
+        collisionDetector = new CollisionDetector(ball, level);
+        highScoreContoller = new HighScoreContoller(this);
+        gameView.resume();
     }
 
     @Override
@@ -102,16 +113,6 @@ public class GameActivity extends AppCompatActivity {
 
     private Level createLevel(String levelId) {
         return xmlMapParser.getParsedLevel(levelId);
-    }
-
-    public void nextLevel() {
-        String nextLevelId = level.getNextLevelId();
-        if (nextLevelId.equals("gameCompleted")) {
-            congrats();
-        }
-        else {
-            level = createLevel(nextLevelId);
-        }
     }
 
     private void congrats() {
