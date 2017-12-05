@@ -2,6 +2,7 @@ package nik.uniobuda.hu.balancingball.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import nik.uniobuda.hu.balancingball.GameView;
 import nik.uniobuda.hu.balancingball.logic.CollisionDetector;
@@ -93,6 +94,7 @@ public class GameActivity extends AppCompatActivity {
         collisionDetector = new CollisionDetector(ball, level);
         highScoreContoller = new HighScoreContoller(this);
         gameView.resume();
+        showLevelMessage();
     }
 
     @Override
@@ -116,5 +118,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void congrats() {
+    }
+
+    public void showLevelMessage() {
+        Toast toast = Toast.makeText(this, level.getLevelMsg(), Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

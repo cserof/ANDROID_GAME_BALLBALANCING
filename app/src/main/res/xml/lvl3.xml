@@ -1,6 +1,6 @@
 <level>
     <id>lvl3</id>
-    <levelMsg>"Get to the finish line!"</levelMsg>
+    <levelMsg>"Avoid the dark obstacles! They are dangerous..."</levelMsg>
     <nextLevelId>lvl4</nextLevelId>
     <startX>177.5</startX>
     <startY>225</startY>

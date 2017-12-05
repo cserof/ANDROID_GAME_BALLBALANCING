@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -117,6 +118,7 @@ public class GameView extends SurfaceView implements Runnable {
                 }
             }
         });
+        gameContext.showLevelMessage();
     }
 
     private void initPaints() {
