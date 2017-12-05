@@ -11,6 +11,7 @@ import nik.uniobuda.hu.balancingball.util.MatrixOperations;
 public class Ball {
 
     private static final float radius = 50;
+    private static final float coefficientOfFriction = 0.99f;
     private ArrayList<Point3D> points = new ArrayList<Point3D>();
 
     private float positionX;
@@ -53,6 +54,12 @@ public class Ball {
 
     public void accelerate() {
         velocity.add(acceleration);
+        friction();
+    }
+
+    private void friction() {
+        this.velocity.setX(velocity.getX()*coefficientOfFriction);
+        this.velocity.setY(velocity.getY()*coefficientOfFriction);
     }
 
     public void roll() {
