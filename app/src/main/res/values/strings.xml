@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BALANCINGBALL</string>
     <string name="start">START</string>
-    <string name="records">RECORDS</string>
+    <string name="highscore">HIGHSCORE</string>
     <string name="levels">LEVELS</string>
     <string name="lost">YOU LOST</string>
     <string name="won">YOU WON</string>

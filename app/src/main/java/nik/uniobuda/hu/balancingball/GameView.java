@@ -34,13 +34,7 @@ public class GameView extends SurfaceView implements Runnable {
     private long fps;
     private long timeThisFrame;
 
-    private Stopwatch stopper;
-    private Level level;
-    private Ball ball;
-    private CollisionDetector collisionDetector;
-    private HighScoreContoller highScoreContoller;
-
-    private Context context;
+    private GameActivity gameContext;
     private Thread gameThread = null;
     private SurfaceHolder surfaceHolder;
     private volatile boolean playing;
@@ -53,16 +47,11 @@ public class GameView extends SurfaceView implements Runnable {
     private float horizontalOffset;
     private float verticalOffset;
 
-    public GameView(Context context, Ball ball, Level lvl) {
+    public GameView(Context context) {
         super(context);
 
-        this.context = context;
-        this.ball = ball;
-        this.level = lvl;
-        this.collisionDetector = new CollisionDetector(ball, level);
-        this.highScoreContoller = new HighScoreContoller(this.context);
+        this.gameContext = (GameActivity) context;
         surfaceHolder = getHolder();
-        stopper = new Stopwatch();
         init();
     }
 
@@ -90,14 +79,14 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        if (collisionDetector.isGameLost()) {
+        if (gameContext.isGameLost()) {
             String lost = getResources().getString(R.string.lost);
             drawEndGameMessage(lost);
         }
-        else if (collisionDetector.isGameWon()) {
+        else if (gameContext.isGameWon()) {
             String won = getResources().getString(R.string.won);
             drawEndGameMessage(won);
-            highScoreContoller.addTime(level.getId(), stopper.getElapsedTime());
+            gameContext.addHighScore();
         }
     }
 
@@ -124,27 +113,19 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void init() {
         initPaints();
-        stopper.startOrReset();
+        gameContext.startOrResetStopper();
         playing = true;
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!playing) {
-                    if (collisionDetector.isGameWon()) {
-                        level = ((GameActivity)context).nextLevel();
+                    if (gameContext.isGameWon()) {
+                        gameContext.nextLevel();
                     }
-                    restart();
+                    gameContext.restart();
                 }
             }
         });
-    }
-
-    private void restart() {
-        pause();
-        ball.setToStartPosition(level.getStartX(), level.getStartY());
-        stopper.startOrReset();
-        this.collisionDetector = new CollisionDetector(ball, level);
-        resume();
     }
 
     private void initPaints() {
@@ -157,8 +138,8 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void calcScale(int w, int h) {
-        float mapWidth = level.getWidth();
-        float mapHeight = level.getHeight();
+        float mapWidth = gameContext.getLevel().getWidth();
+        float mapHeight = gameContext.getLevel().getHeight();
 
         float mapRatio = mapWidth / mapHeight;
         float screenRatio = w/h;
@@ -177,12 +158,12 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void update() {
-        if (!collisionDetector.isGameLost() && !collisionDetector.isGameWon()) {
-            if (!collisionDetector.isJustCollided()) {
-                ball.accelerate();
+        if (!gameContext.isGameLost() && !gameContext.isGameWon()) {
+            if (!gameContext.isBallJustCollided()) {
+                gameContext.getBall().accelerate();
             }
-            ball.roll();
-            collisionDetector.detect();
+            gameContext.getBall().roll();
+            gameContext.detectCollisions();
         }
         else {
             playing = false;
@@ -204,37 +185,37 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void drawElapsedTime() {
         fillPaint.setTextSize(45);
-        canvas.drawText(stopper.getFormattedElapsedTime(), 20, 60, fillPaint);
+        canvas.drawText(gameContext.getFormattedElapsedTime(), 20, 60, fillPaint);
     }
 
     private void showDebugInfo() {
         fillPaint.setTextSize(45);
         canvas.drawText("FPS:" + fps, 20, 40, fillPaint);
-        canvas.drawText("x:  " + ball.getPositionX(), 20, 90, fillPaint);
-        canvas.drawText("y: " +  ball.getPositionY(), 20, 140, fillPaint);
+        canvas.drawText("x:  " + gameContext.getBall().getPositionX(), 20, 90, fillPaint);
+        canvas.drawText("y: " +  gameContext.getBall().getPositionY(), 20, 140, fillPaint);
     }
 
     private void drawMovingObjects() {
-        float drawnX = ball.getPositionX()*scale + horizontalOffset;
-        float drawnY = ball.getPositionY()*scale + verticalOffset;
+        float drawnX = gameContext.getBall().getPositionX()*scale + horizontalOffset;
+        float drawnY = gameContext.getBall().getPositionY()*scale + verticalOffset;
 
         fillPaint.setColor(Color.RED);
         canvas.drawCircle(
                 drawnX,
                 drawnY,
-                ball.getRadius()*scale,
+                gameContext.getBall().getRadius()*scale,
                 fillPaint);
         canvas.drawCircle(
                 drawnX,
                 drawnY,
-                ball.getRadius()*scale,
+                gameContext.getBall().getRadius()*scale,
                 strokePaint);
 
         fillPaint.setColor(Color.BLACK);
 
         float dotSize = 3;
 
-        ArrayList<Point3D> points = ball.getPoints();
+        ArrayList<Point3D> points = gameContext.getBall().getPoints();
         for (Point3D point : points) {
             if (point.getDisplayedZ() > 0) {
                 canvas.drawCircle(
@@ -247,7 +228,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void drawLevelBackground() {
-        for (MapElement element : level.getMapElements()) {
+        for (MapElement element : gameContext.getLevel().getMapElements()) {
             switch (element.getType()) {
                 case FINISH :
                     fillPaint.setColor(Color.GREEN);
