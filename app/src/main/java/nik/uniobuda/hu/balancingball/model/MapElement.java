@@ -7,11 +7,11 @@ import nik.uniobuda.hu.balancingball.util.MapType;
  */
 
 public class MapElement {
-    float left;
-    float top;
-    float right;
-    float bottom;
-    MapType type;
+    private float left;
+    private float top;
+    private float right;
+    private float bottom;
+    private MapType type;
 
     boolean isDamage;
 

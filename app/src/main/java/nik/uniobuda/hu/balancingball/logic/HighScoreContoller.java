@@ -26,8 +26,8 @@ import nik.uniobuda.hu.balancingball.util.TimeFormatter;
 
 public class HighScoreContoller {
 
-    HashMap<String, Highscore> highScores;
-    Context context;
+    private HashMap<String, Highscore> highScores;
+    private Context context;
 
     public HighScoreContoller(Context context) {
         this.context = context;

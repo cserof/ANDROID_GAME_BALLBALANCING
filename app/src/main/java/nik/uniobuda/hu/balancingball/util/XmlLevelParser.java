@@ -25,7 +25,7 @@ import static nik.uniobuda.hu.balancingball.util.MapType.WALL;
 
 public class XmlLevelParser {
 
-    Context context;
+    private Context context;
 
     public XmlLevelParser(Context context) {
         this.context = context;

@@ -15,7 +15,7 @@ import nik.uniobuda.hu.balancingball.util.XmlLevelParser;
 
 public class LevelsActivity extends AppCompatActivity {
 
-    List<LevelInfo> levelInfos;
+    private List<LevelInfo> levelInfos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

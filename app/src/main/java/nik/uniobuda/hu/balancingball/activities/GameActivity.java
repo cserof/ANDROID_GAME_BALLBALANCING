@@ -100,11 +100,11 @@ public class GameActivity extends AppCompatActivity {
         sensor.unregisterSensors();
     }
 
-    public Level createLevel(String levelId) {
+    private Level createLevel(String levelId) {
         return xmlMapParser.getParsedLevel(levelId);
     }
 
-    public Level nextLevel() {
+    public void nextLevel() {
         String nextLevelId = level.getNextLevelId();
         if (nextLevelId.equals("gameCompleted")) {
             congrats();
@@ -112,7 +112,6 @@ public class GameActivity extends AppCompatActivity {
         else {
             level = createLevel(nextLevelId);
         }
-        return level;
     }
 
     private void congrats() {

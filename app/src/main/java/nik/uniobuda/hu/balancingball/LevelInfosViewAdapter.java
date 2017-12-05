@@ -15,7 +15,7 @@ import nik.uniobuda.hu.balancingball.model.LevelInfo;
 
 public class LevelInfosViewAdapter extends BaseAdapter {
 
-    List<LevelInfo> items;
+    private List<LevelInfo> items;
 
     public LevelInfosViewAdapter(List<LevelInfo> items) {
         this.items = items;

@@ -11,8 +11,8 @@ import nik.uniobuda.hu.balancingball.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView textViewStart;
-    TextView textViewHighscore;
+    private TextView textViewStart;
+    private TextView textViewHighscore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

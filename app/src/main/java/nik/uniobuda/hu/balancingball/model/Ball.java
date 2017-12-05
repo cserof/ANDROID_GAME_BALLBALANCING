@@ -10,9 +10,10 @@ import nik.uniobuda.hu.balancingball.util.MatrixOperations;
 
 public class Ball {
 
-    private static final float radius = 50;
-    private static final float coefficientOfFriction = 0.99f;
-    private ArrayList<Point3D> points = new ArrayList<Point3D>();
+    private final float radius = 50;
+    private final float dotSize = 3;
+    private final float coefficientOfFriction = 0.99f;
+    private final ArrayList<Point3D> points = new ArrayList<Point3D>();
 
     private float positionX;
     private float positionY;
@@ -35,8 +36,12 @@ public class Ball {
         return positionY;
     }
 
-    public static float getRadius() {
+    public float getRadius() {
         return radius;
+    }
+
+    public float getDotSize() {
+        return dotSize;
     }
 
     public ArrayList<Point3D> getPoints() {
@@ -44,7 +49,7 @@ public class Ball {
     }
 
 
-    public void setNextRotationMatrix(double[][] rotationMatrix) {
+    private void setNextRotationMatrix(double[][] rotationMatrix) {
         this.rotationMatrix = MatrixOperations.matrixMultiplication(this.rotationMatrix,rotationMatrix);
         for (Point3D point : points) {
             point.calcRotatedCoordinates(this.rotationMatrix);

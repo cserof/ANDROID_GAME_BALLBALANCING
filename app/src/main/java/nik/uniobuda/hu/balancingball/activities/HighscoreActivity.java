@@ -14,8 +14,8 @@ import nik.uniobuda.hu.balancingball.util.XmlLevelParser;
 
 public class HighscoreActivity extends AppCompatActivity {
 
-    List<LevelInfo> levelInfos;
-    List<String> highscoreListItems = new ArrayList<String>();
+    private List<LevelInfo> levelInfos;
+    private List<String> highscoreListItems = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
