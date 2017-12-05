@@ -2,6 +2,7 @@ package nik.uniobuda.hu.balancingball.util;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
@@ -69,7 +70,7 @@ public class XmlLevelParser {
         float height = 0;
         String levelMsg = "";
         String nextLevelId = "";
-        ArrayList<MapElement> mapElements = new ArrayList<MapElement>();
+        ArrayList<MapElement> mapElements = null;
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
@@ -95,8 +96,8 @@ public class XmlLevelParser {
                 if (name.equals("height")) {
                     height = Float.parseFloat(xrp.nextText());
                 }
-                if (name.equals("mapElement")) {
-                    mapElements.add(parseLevelElement(xrp));
+                if (name.equals("mapElements")) {
+                    mapElements = parseLevelElements(xrp);
                 }
                 if (name.equals("stateDependentElements")) {
                     mapElements.add(parseStateDependentElement(xrp));
@@ -134,13 +135,36 @@ public class XmlLevelParser {
         return lvlInfo;
     }
 
-    private MapElement parseLevelElement(XmlResourceParser xrp) {
+    private ArrayList<MapElement> parseLevelElements(XmlResourceParser xrp) throws XmlPullParserException, IOException {
+        ArrayList<MapElement> mapElements = new ArrayList<>();
+        int eventType = xrp.getEventType();
+        boolean done = false;
+        while (!done) {
+            if (eventType == XmlPullParser.START_TAG) {
+                String name = xrp.getName();
+                if (name.equals("mapElement")) {
+                    mapElements.add(parseStateIndependentElement(xrp));
+                }
+                else if (name.equals("stateDependentElement")) {
+                    mapElements.add(parseStateDependentElement(xrp));
+                }
+            }
+            else if (eventType == XmlPullParser.END_TAG) {
+                if (xrp.getName().equals("mapElements")) {
+                    done = true;
+                }
+            }
+            eventType = xrp.next();
+        }
+        return mapElements;
+    }
+
+    private MapElement parseStateIndependentElement(XmlResourceParser xrp) {
         float left = Float.parseFloat(xrp.getAttributeValue(null, "left"));
         float top = Float.parseFloat(xrp.getAttributeValue(null, "top"));
         float right = Float.parseFloat(xrp.getAttributeValue(null, "right"));
         float bottom = Float.parseFloat(xrp.getAttributeValue(null, "bottom"));
         String type = xrp.getAttributeValue(null, "type");
-
         boolean isDamage = xrp.getAttributeBooleanValue(null, "isDamage",false);
 
         MapElementType mt = null;
