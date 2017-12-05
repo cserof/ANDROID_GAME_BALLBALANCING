@@ -8,17 +8,11 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-
 import java.util.ArrayList;
-
 import nik.uniobuda.hu.balancingball.activities.GameActivity;
-import nik.uniobuda.hu.balancingball.logic.CollisionDetector;
-import nik.uniobuda.hu.balancingball.logic.Stopwatch;
-import nik.uniobuda.hu.balancingball.model.Ball;
-import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.MapElement;
 import nik.uniobuda.hu.balancingball.model.Point3D;
-import nik.uniobuda.hu.balancingball.logic.HighScoreContoller;
+
 
 
 /**

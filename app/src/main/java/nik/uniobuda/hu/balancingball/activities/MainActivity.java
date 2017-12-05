@@ -12,6 +12,7 @@ import nik.uniobuda.hu.balancingball.R;
 public class MainActivity extends AppCompatActivity {
 
     TextView textViewStart;
+    TextView textViewHighscore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initTextViewStart();
+        initTextViewHighscores();
     }
-
 
     @Override
     protected void onResume() {
@@ -40,6 +41,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, LevelsActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    private void initTextViewHighscores() {
+        textViewHighscore = (TextView) findViewById(R.id.highscore);
+        textViewHighscore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, HighscoreActivity.class);
                 startActivity(i);
             }
         });

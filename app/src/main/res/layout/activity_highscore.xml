@@ -4,17 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="nik.uniobuda.hu.balancingball.activities.LevelsActivity">
+    tools:context="nik.uniobuda.hu.balancingball.activities.HighscoreActivity">
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/levels"
+        android:text="@string/highscore"
         android:paddingTop="30dp"
         android:textAlignment="center"
-        android:textSize="50sp"/>
+        android:textSize="50sp" />
     <android.support.v7.widget.ListViewCompat
         android:paddingTop="20dp"
-        android:id="@+id/listviewlevels"
+        android:id="@+id/listviewhighscores"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </android.support.v7.widget.LinearLayoutCompat>

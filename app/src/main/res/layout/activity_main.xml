@@ -16,7 +16,7 @@
         android:textSize="50sp" />
 
     <TextView
-        android:id="@+id/records"
+        android:id="@+id/highscore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="40dp"

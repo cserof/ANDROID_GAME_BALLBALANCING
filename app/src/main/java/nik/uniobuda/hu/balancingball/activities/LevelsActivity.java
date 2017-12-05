@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import java.util.List;
 
-import nik.uniobuda.hu.balancingball.util.LevelInfosViewAdapter;
+import nik.uniobuda.hu.balancingball.LevelInfosViewAdapter;
 import nik.uniobuda.hu.balancingball.R;
 import nik.uniobuda.hu.balancingball.model.LevelInfo;
 import nik.uniobuda.hu.balancingball.util.XmlLevelParser;
@@ -22,13 +22,13 @@ public class LevelsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_levels);
 
-        initLevels();
+        initLevelInfos();
         initLevelInfosView();
     }
 
     private void initLevelInfosView() {
         final LevelInfosViewAdapter adapter = new LevelInfosViewAdapter(levelInfos);
-        ListView list = (ListView) findViewById(R.id.listview);
+        ListView list = (ListView) findViewById(R.id.listviewlevels);
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -46,7 +46,7 @@ public class LevelsActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    private void initLevels() {
+    private void initLevelInfos() {
         XmlLevelParser parser = new XmlLevelParser(this);
         levelInfos = parser.getParsedLevelInfos();
     }

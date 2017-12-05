@@ -4,17 +4,17 @@ package nik.uniobuda.hu.balancingball.model;
  * Created by cserof on 11/25/2017.
  */
 
-public class HighScore {
-    String id;
-    long bestTime;
+public class Highscore {
+    private String levelId;
+    private long bestTime;
 
-    public HighScore(String id, long bestTime) {
-        this.id = id;
+    public Highscore(String id, long bestTime) {
+        this.levelId = id;
         this.bestTime = bestTime;
     }
 
-    public String getId() {
-        return id;
+    public String getLevelId() {
+        return levelId;
     }
 
     public long getBestTime() {

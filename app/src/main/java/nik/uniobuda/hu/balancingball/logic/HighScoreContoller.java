@@ -17,7 +17,8 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import nik.uniobuda.hu.balancingball.model.HighScore;
+import nik.uniobuda.hu.balancingball.model.Highscore;
+import nik.uniobuda.hu.balancingball.util.TimeFormatter;
 
 /**
  * Created by cserof on 11/25/2017.
@@ -25,7 +26,7 @@ import nik.uniobuda.hu.balancingball.model.HighScore;
 
 public class HighScoreContoller {
 
-    HashMap<String, HighScore> highScores;
+    HashMap<String, Highscore> highScores;
     Context context;
 
     public HighScoreContoller(Context context) {
@@ -33,9 +34,21 @@ public class HighScoreContoller {
         initHighScores();
     }
 
+    /*
+    public List<Highscore> getHighScores() {
+        ArrayList<Highscore> list = new ArrayList<Highscore>();
+        Iterator it = highScores.entrySet().iterator();
+        while (it.hasNext()) {
+            HashMap.Entry<String, Highscore> pair = (HashMap.Entry<String, Highscore>)it.next();
+            list.add(pair.getValue());
+            it.remove();
+        }
+        return list;
+    }
+*/
     public void addTime(String levelId, long time) {
         if (!highScores.containsKey(levelId)) {
-            highScores.put(levelId, new HighScore(levelId, time));
+            highScores.put(levelId, new Highscore(levelId, time));
             String xml = writeToXml();
             saveRecordsToFile(xml);
         }
@@ -57,7 +70,7 @@ public class HighScoreContoller {
 
             Iterator it = highScores.entrySet().iterator();
             while (it.hasNext()) {
-                HashMap.Entry<String, HighScore> pair = (HashMap.Entry<String, HighScore>)it.next();
+                HashMap.Entry<String, Highscore> pair = (HashMap.Entry<String, Highscore>)it.next();
 
                 serializer.startTag("", "highScore");
                 serializer.attribute("", "id", pair.getKey());
@@ -88,7 +101,7 @@ public class HighScoreContoller {
 
 
     private void initHighScores() {
-        highScores = new HashMap<String, HighScore>();
+        highScores = new HashMap<String, Highscore>();
         String file = openHighScoresFromFile();
         parseHighScores(file);
     }
@@ -104,8 +117,8 @@ public class HighScoreContoller {
                 if (eventType == XmlPullParser.START_TAG) {
                     String name = parser.getName();
                     if (name.equals("highScore")) {
-                        HighScore rec = parseRecord(parser);
-                        highScores.put(rec.getId(), rec);
+                        Highscore rec = parseHighscore(parser);
+                        highScores.put(rec.getLevelId(), rec);
                     }
                 }
                 eventType = parser.next();
@@ -117,10 +130,10 @@ public class HighScoreContoller {
         }
     }
 
-    private HighScore parseRecord(XmlPullParser parser) {
+    private Highscore parseHighscore(XmlPullParser parser) {
         String id =  parser.getAttributeValue(null, "id");
         long bestTime = Long.parseLong(parser.getAttributeValue(null, "bestTime"));
-        return new HighScore(id, bestTime);
+        return new Highscore(id, bestTime);
     }
 
     private String openHighScoresFromFile() {
@@ -142,7 +155,7 @@ public class HighScoreContoller {
         return sb.toString();
     }
 
-    public long getHighScore(String id) {
+    public String getFormattedBestTime(String id) {
         long time;
         if (highScores.containsKey(id)) {
             time = highScores.get(id).getBestTime();
@@ -150,6 +163,6 @@ public class HighScoreContoller {
         else {
             time = 0;
         }
-        return time;
+        return TimeFormatter.formatTime(time);
     }
 }

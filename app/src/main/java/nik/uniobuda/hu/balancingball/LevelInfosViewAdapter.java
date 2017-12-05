@@ -1,6 +1,5 @@
-package nik.uniobuda.hu.balancingball.util;
+package nik.uniobuda.hu.balancingball;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,8 +7,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import nik.uniobuda.hu.balancingball.R;
-import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.LevelInfo;
 
 /**
@@ -50,7 +47,7 @@ public class LevelInfosViewAdapter extends BaseAdapter {
             );
         }
 
-        TextView levelsTextView = (TextView) myview.findViewById(R.id.lvlNrTextView);
+        TextView levelsTextView = (TextView) myview.findViewById(R.id.levelIdTextView);
         LevelInfo lvlInfo = (LevelInfo) getItem(position);
         levelsTextView.setText(lvlInfo.getName());
 
