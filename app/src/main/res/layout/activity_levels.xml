@@ -4,16 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="nik.uniobuda.hu.balancingball.activities.LevelsActivity">
+    tools:context="nik.uniobuda.hu.balancingball.activity.LevelsActivity">
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/levels"
         android:paddingTop="30dp"
         android:textAlignment="center"
-        android:textSize="50sp"/>
+        android:textSize="50sp"
+        android:textStyle="bold"/>
     <android.support.v7.widget.ListViewCompat
-        android:paddingTop="20dp"
+        android:paddingTop="30dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
         android:id="@+id/listviewlevels"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

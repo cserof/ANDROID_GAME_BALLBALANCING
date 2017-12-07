@@ -1,17 +1,19 @@
-package nik.uniobuda.hu.balancingball;
+package nik.uniobuda.hu.balancingball.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import nik.uniobuda.hu.balancingball.activities.GameActivity;
+import nik.uniobuda.hu.balancingball.R;
+import nik.uniobuda.hu.balancingball.activity.GameActivity;
 import nik.uniobuda.hu.balancingball.model.MapElement;
 import nik.uniobuda.hu.balancingball.model.Point3D;
 import nik.uniobuda.hu.balancingball.model.StateDependentElement;
@@ -38,6 +40,10 @@ public class GameView extends SurfaceView implements Runnable {
 
     private Paint fillPaint;
     private Paint strokePaint;
+    private Rect timerTextBounds;
+
+    private int viewHeight;
+    private int viewWidth;
 
     private float scale;
     private float horizontalOffset;
@@ -101,6 +107,8 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        viewWidth = w;
+        viewHeight = h;
         calcScale(w, h);
     }
 
@@ -181,8 +189,14 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void drawElapsedTime() {
-        fillPaint.setTextSize(canvas.getHeight()/24);
-        canvas.drawText(gameContext.getFormattedElapsedTime(), 20, 60, fillPaint);
+        String caption = gameContext.getFormattedElapsedTime();
+        float fontsize = 24; // sp
+        float fontsizeInPixel = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, fontsize, getResources().getDisplayMetrics());
+        timerTextBounds = new Rect();
+        fillPaint.setTextSize(fontsizeInPixel);
+        fillPaint.getTextBounds(caption, 0, caption.length()-1, timerTextBounds );
+        int offset = timerTextBounds.bottom - timerTextBounds.top;
+        canvas.drawText(caption, 0, offset, fillPaint);
     }
 
     private void showDebugInfo() {
@@ -266,11 +280,12 @@ public class GameView extends SurfaceView implements Runnable {
 
             canvas = surfaceHolder.lockCanvas();
             fillPaint.setColor(palette.getColorText());
-            fillPaint.setTextSize(canvas.getHeight()/12);
-            int xPos = (canvas.getWidth() / 2);
-            int yPos = (int) ((canvas.getHeight() / 2) - ((fillPaint.descent() + fillPaint.ascent()) / 2)) ;
+            fillPaint.setTextSize(viewHeight/12);
+            int xPos = (viewWidth / 2);
+            int yPos = (int) ((viewHeight / 2) - ((fillPaint.descent() + fillPaint.ascent()) / 2)) ;
             fillPaint.setTextAlign(Paint.Align.CENTER);
             canvas.drawText(message, xPos, yPos, fillPaint);
+            fillPaint.setTextAlign(Paint.Align.LEFT);
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }

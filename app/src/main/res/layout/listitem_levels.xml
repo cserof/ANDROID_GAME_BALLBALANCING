@@ -5,7 +5,8 @@
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="35sp"
+        android:paddingTop="10sp"
         android:id="@+id/levelIdTextView"/>
 
 </LinearLayout>

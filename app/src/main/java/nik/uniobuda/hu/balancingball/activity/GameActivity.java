@@ -1,10 +1,10 @@
-package nik.uniobuda.hu.balancingball.activities;
+package nik.uniobuda.hu.balancingball.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import nik.uniobuda.hu.balancingball.GameView;
+import nik.uniobuda.hu.balancingball.view.GameView;
 import nik.uniobuda.hu.balancingball.logic.CollisionDetector;
 import nik.uniobuda.hu.balancingball.logic.HighScoreController;
 import nik.uniobuda.hu.balancingball.logic.SensorController;

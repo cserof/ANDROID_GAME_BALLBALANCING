@@ -2,7 +2,7 @@ package nik.uniobuda.hu.balancingball.logic;
 
 import android.content.Context;
 
-import nik.uniobuda.hu.balancingball.activities.GameActivity;
+import nik.uniobuda.hu.balancingball.activity.GameActivity;
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.model.MapElement;

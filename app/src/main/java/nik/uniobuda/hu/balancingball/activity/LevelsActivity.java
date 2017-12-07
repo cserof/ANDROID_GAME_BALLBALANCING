@@ -1,4 +1,4 @@
-package nik.uniobuda.hu.balancingball.activities;
+package nik.uniobuda.hu.balancingball.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import java.util.List;
 
-import nik.uniobuda.hu.balancingball.LevelInfosViewAdapter;
+import nik.uniobuda.hu.balancingball.adapter.LevelInfosViewAdapter;
 import nik.uniobuda.hu.balancingball.R;
 import nik.uniobuda.hu.balancingball.model.LevelInfo;
 import nik.uniobuda.hu.balancingball.util.XmlLevelParser;

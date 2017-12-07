@@ -1,4 +1,4 @@
-package nik.uniobuda.hu.balancingball.activities;
+package nik.uniobuda.hu.balancingball.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
