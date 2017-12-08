@@ -63,13 +63,13 @@ public class XmlLevelParser {
         XmlResourceParser xrp = context.getResources().getXml(resourceId);
         int eventType = xrp.getEventType();
 
-        String id = "";
+        String id = null;
         float startX = 0;
         float startY = 0;
         float width = 0;
         float height = 0;
-        String levelMsg = "";
-        String nextLevelId = "";
+        String levelMsg = null;
+        String nextLevelId = null;
         ArrayList<MapElement> mapElements = null;
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -78,28 +78,28 @@ public class XmlLevelParser {
                 if (name.equals("id")) {
                     id = String.valueOf(xrp.nextText());
                 }
-                if (name.equals("levelMsg")) {
+                else if (name.equals("levelMsg")) {
                     levelMsg = xrp.nextText();
                 }
-                if (name.equals("nextLevelId")) {
+                else if (name.equals("nextLevelId")) {
                     nextLevelId = xrp.nextText();
                 }
-                if (name.equals("startX")) {
+                else if (name.equals("startX")) {
                     startX = Float.parseFloat(xrp.nextText());
                 }
-                if (name.equals("startY")) {
+                else if (name.equals("startY")) {
                     startY = Float.parseFloat(xrp.nextText());
                 }
-                if (name.equals("width")) {
+                else if (name.equals("width")) {
                     width = Float.parseFloat(xrp.nextText());
                 }
-                if (name.equals("height")) {
+                else if (name.equals("height")) {
                     height = Float.parseFloat(xrp.nextText());
                 }
-                if (name.equals("mapElements")) {
+                else if (name.equals("mapElements")) {
                     mapElements = parseLevelElements(xrp);
                 }
-                if (name.equals("stateDependentElements")) {
+                else if (name.equals("stateDependentElements")) {
                     mapElements.add(parseStateDependentElement(xrp));
                 }
             }
