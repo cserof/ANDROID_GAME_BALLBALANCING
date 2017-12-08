@@ -111,6 +111,7 @@ public class GameView extends SurfaceView implements Runnable {
         gameContext.startOrResetStopper();
         playing = true;
         setOnClickListeners();
+        gameContext.showLevelMessage();
     }
 
     private void setOnClickListeners() {
@@ -121,14 +122,16 @@ public class GameView extends SurfaceView implements Runnable {
                     if (gameContext.isGameWon()) {
                         gameContext.nextLevel();
                     }
-                    gameContext.restart();
+                    else {
+                        gameContext.restart();
+                    }
+                    playing = true;
                 }
                 else {
                     gameContext.changeMapState();
                 }
             }
         });
-        gameContext.showLevelMessage();
     }
 
     private void initPaints() {

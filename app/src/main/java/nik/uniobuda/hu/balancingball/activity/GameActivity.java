@@ -1,5 +1,6 @@
 package nik.uniobuda.hu.balancingball.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -117,6 +118,7 @@ public class GameActivity extends AppCompatActivity {
         }
         else {
             level = createLevel(nextLevelId);
+            restart();
         }
     }
 
@@ -139,6 +141,7 @@ public class GameActivity extends AppCompatActivity {
 
         gameView.resume();
         sensor.registerSensors();
+        restart();
     }
 
     @Override
@@ -154,10 +157,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void congrats() {
+        Toast toast = Toast.makeText(this, "Awesome! You've completed the game!", Toast.LENGTH_LONG);
+        toast.show();
+        Intent i = new Intent(GameActivity.this, HighscoreActivity.class);
+        startActivity(i);
     }
 
     public void showLevelMessage() {
-        Toast toast = Toast.makeText(this, level.getLevelMsg(), Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(this, level.getLevelMsg(), Toast.LENGTH_LONG);
         toast.show();
     }
 }
