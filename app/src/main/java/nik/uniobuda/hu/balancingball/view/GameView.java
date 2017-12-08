@@ -76,16 +76,10 @@ public class GameView extends SurfaceView implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
 
-        if (gameContext.isGameLost()) {
-            String lost = getResources().getString(R.string.lost);
-            drawEndGameMessage(lost);
-        }
-        else if (gameContext.isGameWon()) {
-            String won = getResources().getString(R.string.won);
-            drawEndGameMessage(won);
-            gameContext.addHighScore();
+            if (gameContext.isGameLost() || gameContext.isGameWon()) {
+                playing = false;
+            }
         }
     }
 
@@ -116,6 +110,10 @@ public class GameView extends SurfaceView implements Runnable {
         initPaints();
         gameContext.startOrResetStopper();
         playing = true;
+        setOnClickListeners();
+    }
+
+    private void setOnClickListeners() {
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,16 +161,11 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void update() {
-        if (!gameContext.isGameLost() && !gameContext.isGameWon()) {
-            if (!gameContext.isBallJustCollided()) {
-                gameContext.getBall().accelerate();
-            }
-            gameContext.getBall().roll();
-            gameContext.detectCollisions();
+        if (!gameContext.isBallJustCollided()) {
+            gameContext.getBall().accelerate();
         }
-        else {
-            playing = false;
-        }
+        gameContext.getBall().roll();
+        gameContext.detectCollisions();
     }
 
     private void draw() {
@@ -184,6 +177,16 @@ public class GameView extends SurfaceView implements Runnable {
             drawMovingObjects();
             drawElapsedTime();
 
+            if (gameContext.isGameLost()) {
+                String lost = getResources().getString(R.string.lost);
+                drawEndGameMessage(lost);
+            }
+            else if (gameContext.isGameWon()) {
+                String won = getResources().getString(R.string.won);
+                drawEndGameMessage(won);
+            }
+
+            Log.d("BB", "Drawing: Hi from thread: " +  Thread.currentThread().getName());
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
@@ -276,17 +279,12 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void drawEndGameMessage(String message) {
-        if (surfaceHolder.getSurface().isValid()) {
-
-            canvas = surfaceHolder.lockCanvas();
-            fillPaint.setColor(palette.getColorText());
-            fillPaint.setTextSize(viewHeight/12);
-            int xPos = (viewWidth / 2);
-            int yPos = (int) ((viewHeight / 2) - ((fillPaint.descent() + fillPaint.ascent()) / 2)) ;
-            fillPaint.setTextAlign(Paint.Align.CENTER);
-            canvas.drawText(message, xPos, yPos, fillPaint);
-            fillPaint.setTextAlign(Paint.Align.LEFT);
-            surfaceHolder.unlockCanvasAndPost(canvas);
-        }
+        fillPaint.setColor(palette.getColorText());
+        fillPaint.setTextSize(viewHeight/12);
+        int xPos = (viewWidth / 2);
+        int yPos = (int) ((viewHeight / 2) - ((fillPaint.descent() + fillPaint.ascent()) / 2)) ;
+        fillPaint.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText(message, xPos, yPos, fillPaint);
+        fillPaint.setTextAlign(Paint.Align.LEFT);
     }
 }

@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 import nik.uniobuda.hu.balancingball.model.Ball;
 
@@ -56,6 +57,7 @@ public class SensorController {
                 if (success) {
                     SensorManager.getOrientation(R, orientation);
                     ball.calculateForceOnTheBall(orientation);
+                    Log.d("BB", "Sensor: Hi from thread: " +  Thread.currentThread().getName());
                 }
             }
         }

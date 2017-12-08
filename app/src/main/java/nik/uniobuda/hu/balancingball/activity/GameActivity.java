@@ -23,6 +23,8 @@ public class GameActivity extends AppCompatActivity {
     private Stopwatch stopper;
     private CollisionDetector collisionDetector;
     private HighScoreController highScoreContoller;
+    private boolean isGameLost;
+    private boolean isGameWon;
     private XmlLevelParser xmlMapParser;
     private MapState mapState;
 
@@ -39,9 +41,12 @@ public class GameActivity extends AppCompatActivity {
         collisionDetector = new CollisionDetector(this, ball, level);
         highScoreContoller = new HighScoreController(this);
         stopper = new Stopwatch();
+        mapState = MapState.STATE0;
+        isGameLost = false;
+        isGameWon = false;
+
         gameView = new GameView(this);
         setContentView(gameView);
-        mapState = MapState.STATE0;
     }
 
     public MapState getMapState() {
@@ -57,11 +62,23 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public boolean isGameLost() {
-        return collisionDetector.isGameLost();
+        return isGameLost;
     }
 
     public boolean isGameWon() {
-        return collisionDetector.isGameWon();
+        return isGameWon;
+    }
+
+    public void setGameLost(boolean gameLost) {
+        isGameLost = gameLost;
+    }
+
+    public void setGameWon(boolean gameWon) {
+        isGameWon = gameWon;
+        if (isGameWon) {
+            stopper.freeze();
+            addHighScore();
+        }
     }
 
     public boolean isBallJustCollided() {
@@ -110,6 +127,8 @@ public class GameActivity extends AppCompatActivity {
         mapState = MapState.STATE0;
         collisionDetector = new CollisionDetector(this, ball, level);
         highScoreContoller = new HighScoreController(this);
+        setGameLost(false);
+        setGameWon(false);
         gameView.resume();
         showLevelMessage();
     }

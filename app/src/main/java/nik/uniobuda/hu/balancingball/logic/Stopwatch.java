@@ -9,18 +9,32 @@ import nik.uniobuda.hu.balancingball.util.TimeFormatter;
 public class Stopwatch {
 
     private long startTime;
+    private boolean freezed = false;
+    private long freezedTime;
 
     public void startOrReset() {
+        freezed = false;
         startTime = System.currentTimeMillis();
     }
 
     public String getFormattedElapsedTime() {
-        long elapsedTime = System.currentTimeMillis() - startTime;
-        return TimeFormatter.formatTime(elapsedTime);
+        return TimeFormatter.formatTime(getElapsedTime());
     }
 
     public long getElapsedTime() {
-        return System.currentTimeMillis() - startTime;
+        long elapsedTime;
+        if (freezed) {
+            elapsedTime = freezedTime;
+        }
+        else {
+            elapsedTime = System.currentTimeMillis() - startTime;
+        }
+        return elapsedTime;
+    }
+
+    public void freeze() {
+        freezedTime = getElapsedTime();
+        freezed = true;
     }
 
 }

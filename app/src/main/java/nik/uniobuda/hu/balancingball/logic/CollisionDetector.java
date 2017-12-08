@@ -1,6 +1,7 @@
 package nik.uniobuda.hu.balancingball.logic;
 
 import android.content.Context;
+import android.util.Log;
 
 import nik.uniobuda.hu.balancingball.activity.GameActivity;
 import nik.uniobuda.hu.balancingball.model.Ball;
@@ -18,8 +19,6 @@ public class CollisionDetector {
     private Level lvl;
     private MapElement lastCollisionObject;
     private boolean justCollided;
-    private boolean isGameLost;
-    private boolean isGameWon;
     private GameActivity gameContext;
 
     public CollisionDetector(Context context, Ball ball, Level level) {
@@ -28,19 +27,11 @@ public class CollisionDetector {
         this.lvl = level;
         lastCollisionObject = null;
         justCollided = false;
-        isGameLost = false;
-        isGameWon = false;
-    }
 
-    public boolean isGameLost() {
-        return isGameLost;
-    }
-
-    public boolean isGameWon() {
-        return isGameWon;
     }
 
     public void detect() {
+        Log.d("BB", "Collision detection: Hi from thread: " +  Thread.currentThread().getName());
         if (isJustCollided()) {
             if (!isCollided(lastCollisionObject)) {
                 justCollided = false;
@@ -64,7 +55,7 @@ public class CollisionDetector {
                         break;
                     case FINISH:
                         if (isIncluded(element)) {
-                            isGameWon = true;
+                            gameContext.setGameWon(true);
                         }
                         break;
                     default:
@@ -79,7 +70,7 @@ public class CollisionDetector {
         lastCollisionObject = element;
 
         if (element.isDamage()) {
-            isGameLost = true;
+            gameContext.setGameLost(true);
         }
         else {
             boolean isHorizontalCollision = ball.getPositionX() > element.getLeft() &&

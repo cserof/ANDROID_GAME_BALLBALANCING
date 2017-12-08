@@ -1,5 +1,7 @@
 package nik.uniobuda.hu.balancingball.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import nik.uniobuda.hu.balancingball.util.MatrixOperations;
@@ -60,6 +62,7 @@ public class Ball {
     public void accelerate() {
         velocity.add(acceleration);
         friction();
+        Log.d("BB", "Ball accelerating: Hi from thread: " +  Thread.currentThread().getName());
     }
 
     private void friction() {
