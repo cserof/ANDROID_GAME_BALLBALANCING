@@ -6,12 +6,12 @@ import nik.uniobuda.hu.balancingball.util.MatrixOperations;
  * Created by cserof on 10/23/2017.
  */
 
-public class Point3D {
+public class Dot3D {
 
     private double[][] initialCoords;
     private double[][] displayedCoords;
 
-    public Point3D(float x, float y, float z) {
+    public Dot3D(float x, float y, float z) {
         this.initialCoords = new double[1][3];
 
         initialCoords[0][0] = x;

@@ -1,8 +1,6 @@
 package nik.uniobuda.hu.balancingball.logic;
 
 import android.content.Context;
-import android.util.Log;
-
 import nik.uniobuda.hu.balancingball.activity.GameActivity;
 import nik.uniobuda.hu.balancingball.model.Ball;
 import nik.uniobuda.hu.balancingball.model.Level;
@@ -11,14 +9,20 @@ import nik.uniobuda.hu.balancingball.model.StateDependentElement;
 
 /**
  * Created by cserof on 11/20/2017.
+ * Implements simple collision detection
+ * iterates through list of mapelements and checks collision on them
  */
 
 public class CollisionDetector {
 
     private Ball ball;
     private Level lvl;
-    private MapElement lastCollisionObject;
+
     private boolean justCollided;
+
+    //if there were collision it contains the reference of the wall
+    // it helps to check whether the ball is still overlapping the wall
+    private MapElement lastCollisionObject;
     private GameActivity gameContext;
 
     public CollisionDetector(Context context, Ball ball, Level level) {
@@ -27,11 +31,15 @@ public class CollisionDetector {
         this.lvl = level;
         lastCollisionObject = null;
         justCollided = false;
-
     }
 
+    public boolean isJustCollided() {
+        return justCollided;
+    }
+
+    // if there were collision and the ball is still overlapping the wall
+    // there is no another collision detection
     public void detect() {
-        Log.d("BB", "Collision detection: Hi from thread: " +  Thread.currentThread().getName());
         if (isJustCollided()) {
             if (!isCollided(lastCollisionObject)) {
                 justCollided = false;
@@ -65,6 +73,9 @@ public class CollisionDetector {
         }
     }
 
+    //if the wall is damaging isGameLost is set true
+    //otherwise it bounce back - reversing the sign of the velocity vector's x or y coordinate
+    //depending on the orientation of collision
     private void collisionOnWall(MapElement element) {
         justCollided = true;
         lastCollisionObject = element;
@@ -85,10 +96,6 @@ public class CollisionDetector {
         }
     }
 
-    public boolean isJustCollided() {
-        return justCollided;
-    }
-
     private boolean isCollided(MapElement element) {
         float ballX = ball.getPositionX();
         float ballY = ball.getPositionY();
@@ -100,6 +107,8 @@ public class CollisionDetector {
                 element.getBottom() >= ballY - ballRadius;
     }
 
+    //ball and the element parameter is overlapping at least
+    //the portion of overlapForWinning
     private boolean isIncluded(MapElement element) {
         float ballX = ball.getPositionX();
         float ballY = ball.getPositionY();

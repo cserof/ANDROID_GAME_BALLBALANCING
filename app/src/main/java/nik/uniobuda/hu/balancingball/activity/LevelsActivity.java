@@ -7,12 +7,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import java.util.List;
-
 import nik.uniobuda.hu.balancingball.adapter.LevelInfosViewAdapter;
 import nik.uniobuda.hu.balancingball.R;
 import nik.uniobuda.hu.balancingball.model.LevelInfo;
 import nik.uniobuda.hu.balancingball.util.XmlLevelParser;
 
+/**
+ * Controls the Level picker feature
+ * gets all the level ids and names from levelinfo.xml
+ * If the level is clicked on it,
+ * the gameActivity is called with the specific level id as a parameter.
+ * */
 public class LevelsActivity extends AppCompatActivity {
 
     private List<LevelInfo> levelInfos;

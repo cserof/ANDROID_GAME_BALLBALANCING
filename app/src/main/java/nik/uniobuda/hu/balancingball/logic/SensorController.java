@@ -13,6 +13,7 @@ import static android.content.Context.SENSOR_SERVICE;
 
 /**
  * Created by cserof on 11/15/2017.
+ * source:
  * https://stackoverflow.com/questions/20339942/get-device-angle-by-using-getorientation-function
  */
 
@@ -57,7 +58,6 @@ public class SensorController {
                 if (success) {
                     SensorManager.getOrientation(R, orientation);
                     ball.calculateForceOnTheBall(orientation);
-                    Log.d("BB", "Sensor: Hi from thread: " +  Thread.currentThread().getName());
                 }
             }
         }

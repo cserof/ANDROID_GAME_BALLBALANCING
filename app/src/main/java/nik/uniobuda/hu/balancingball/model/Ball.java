@@ -1,7 +1,5 @@
 package nik.uniobuda.hu.balancingball.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 import nik.uniobuda.hu.balancingball.util.MatrixOperations;
@@ -15,7 +13,7 @@ public class Ball {
     private final float radius = 50;
     private final float dotSize = 3;
     private final float coefficientOfFriction = 0.99f;
-    private final ArrayList<Point3D> points = new ArrayList<Point3D>();
+    private final ArrayList<Dot3D> dots = new ArrayList<Dot3D>();
 
     private float positionX;
     private float positionY;
@@ -46,14 +44,14 @@ public class Ball {
         return dotSize;
     }
 
-    public ArrayList<Point3D> getPoints() {
-        return points;
+    public ArrayList<Dot3D> getDots() {
+        return dots;
     }
 
 
     private void setNextRotationMatrix(double[][] rotationMatrix) {
         this.rotationMatrix = MatrixOperations.matrixMultiplication(this.rotationMatrix,rotationMatrix);
-        for (Point3D point : points) {
+        for (Dot3D point : dots) {
             point.calcRotatedCoordinates(this.rotationMatrix);
         }
     }
@@ -62,7 +60,6 @@ public class Ball {
     public void accelerate() {
         velocity.add(acceleration);
         friction();
-        Log.d("BB", "Ball accelerating: Hi from thread: " +  Thread.currentThread().getName());
     }
 
     private void friction() {
@@ -95,21 +92,24 @@ public class Ball {
         this.acceleration.setY(Math.sin(pitch));
     }
 
+    //reversing the sign of velocity vector's X coordinate
     public void bounceOnVertical() {
         velocity.setX(-velocity.getX());
     }
+
+    //reversing the sign of velocity vector's Y coordinate
     public void bounceOnHorizontal() {
         velocity.setY(-velocity.getY());
     }
 
     private void createPoints()
     {
-        points.add(new Point3D(-radius, 0, 0));
-        points.add(new Point3D(radius , 0, 0));
-        points.add(new Point3D(0, -radius, 0));
-        points.add(new Point3D(0, radius, 0));
-        points.add(new Point3D(0, 0, -radius));
-        points.add(new Point3D(0, 0, radius));
+        dots.add(new Dot3D(-radius, 0, 0));
+        dots.add(new Dot3D(radius , 0, 0));
+        dots.add(new Dot3D(0, -radius, 0));
+        dots.add(new Dot3D(0, radius, 0));
+        dots.add(new Dot3D(0, 0, -radius));
+        dots.add(new Dot3D(0, 0, radius));
     }
 
     public void setToStartPosition(float startX, float startY) {

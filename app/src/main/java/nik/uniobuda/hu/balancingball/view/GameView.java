@@ -15,22 +15,23 @@ import java.util.ArrayList;
 import nik.uniobuda.hu.balancingball.R;
 import nik.uniobuda.hu.balancingball.activity.GameActivity;
 import nik.uniobuda.hu.balancingball.model.MapElement;
-import nik.uniobuda.hu.balancingball.model.Point3D;
+import nik.uniobuda.hu.balancingball.model.Dot3D;
 import nik.uniobuda.hu.balancingball.model.StateDependentElement;
 import nik.uniobuda.hu.balancingball.util.Palette;
 
 
 /**
  * Created by cserof on 11/12/2017.
- * gameView:
+ * Game cycle and visualization
+ * source:
  * https://forum.xda-developers.com/android/software/tutorial-create-running-game-animation-t3473191
  */
 
 public class GameView extends SurfaceView implements Runnable {
 
+    // 1 game period interval in ms
+    // fps = 1000/gameCycLePeriod
     private static final long gameCyclePeriod = 40;
-
-    private long fps;
 
     private GameActivity gameContext;
     private Thread gameThread = null;
@@ -40,15 +41,24 @@ public class GameView extends SurfaceView implements Runnable {
 
     private Paint fillPaint;
     private Paint strokePaint;
+
+    //rectangle with the exact size the elapsed time text
+    //helps to position it
+    //inverse coordinates - it's increasing to the top
     private Rect timerTextBounds;
 
     private int viewHeight;
     private int viewWidth;
 
+    //ratio of view size and the size of the map
+    //it's used to scale down the objects of the map
+    //smaller one from ratio of heights or widths
+    //it ensures to fit any screen
     private float scale;
     private float horizontalOffset;
     private float verticalOffset;
 
+    //gets applied colors from xml and store them
     private Palette palette;
 
     public GameView(Context context) {
@@ -57,12 +67,12 @@ public class GameView extends SurfaceView implements Runnable {
         this.gameContext = (GameActivity) context;
         surfaceHolder = getHolder();
         palette = new Palette(context);
-        init();
+        initPaints();
+        setOnClickListeners();
     }
 
     @Override
     public void run() {
-
         while (playing) {
             long startFrameTime = System.currentTimeMillis();
             update();
@@ -106,14 +116,6 @@ public class GameView extends SurfaceView implements Runnable {
         calcScale(w, h);
     }
 
-    private void init() {
-        initPaints();
-        gameContext.startOrResetStopper();
-        playing = true;
-        setOnClickListeners();
-        gameContext.showLevelMessage();
-    }
-
     private void setOnClickListeners() {
         setOnClickListener(new OnClickListener() {
             @Override
@@ -143,6 +145,11 @@ public class GameView extends SurfaceView implements Runnable {
         strokePaint.setColor(palette.getColorStroke());
     }
 
+
+    //Calculates the ratio of view size and the size of the map
+    //it's used to scale down the objects of the map
+    //smaller one from ratio of heights or widths
+    //it ensures to fit any screen
     private void calcScale(int w, int h) {
         float mapWidth = gameContext.getLevel().getWidth();
         float mapHeight = gameContext.getLevel().getHeight();
@@ -189,7 +196,6 @@ public class GameView extends SurfaceView implements Runnable {
                 drawEndGameMessage(won);
             }
 
-            Log.d("BB", "Drawing: Hi from thread: " +  Thread.currentThread().getName());
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
@@ -205,13 +211,7 @@ public class GameView extends SurfaceView implements Runnable {
         canvas.drawText(caption, 0, offset, fillPaint);
     }
 
-    private void showDebugInfo() {
-        fillPaint.setTextSize(45);
-        canvas.drawText("FPS:" + fps, 20, 40, fillPaint);
-        canvas.drawText("x:  " + gameContext.getBall().getPositionX(), 20, 90, fillPaint);
-        canvas.drawText("y: " +  gameContext.getBall().getPositionY(), 20, 140, fillPaint);
-    }
-
+    //drawing the ball inculuding dots
     private void drawMovingObjects() {
         float drawnX = gameContext.getBall().getPositionX()*scale + horizontalOffset;
         float drawnY = gameContext.getBall().getPositionY()*scale + verticalOffset;
@@ -230,8 +230,8 @@ public class GameView extends SurfaceView implements Runnable {
 
         fillPaint.setColor(palette.getColorDotOnBall());
 
-        ArrayList<Point3D> points = gameContext.getBall().getPoints();
-        for (Point3D point : points) {
+        ArrayList<Dot3D> points = gameContext.getBall().getDots();
+        for (Dot3D point : points) {
             if (point.getDisplayedZ() > 0) {
                 canvas.drawCircle(
                         drawnX + point.getDisplayedX()*scale,
@@ -242,6 +242,8 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    //draws the elements of the map
+    //mapState indenpendent ones and ones with mapState equals to the actual state of the game
     private void drawLevelBackground() {
         for (MapElement element : gameContext.getLevel().getMapElements()) {
             if (
@@ -281,6 +283,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    //draws the message parameter into the center of the screen
     private void drawEndGameMessage(String message) {
         fillPaint.setColor(palette.getColorText());
         fillPaint.setTextSize(viewHeight/12);

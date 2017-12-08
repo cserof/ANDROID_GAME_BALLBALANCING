@@ -9,6 +9,10 @@ import android.widget.TextView;
 import nik.uniobuda.hu.balancingball.R;
 
 
+/**
+ * Created by cserof on 11/12/2017.
+ * Controls the main menu of the game
+ */
 public class MainActivity extends AppCompatActivity {
 
     private TextView textViewStart;
@@ -40,10 +44,14 @@ public class MainActivity extends AppCompatActivity {
         textViewStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, LevelsActivity.class);
-                startActivity(i);
+                startLevelsActivity();
             }
         });
+    }
+
+    private void startLevelsActivity() {
+        Intent i = new Intent(MainActivity.this, LevelsActivity.class);
+        startActivity(i);
     }
 
     private void initTextViewHighscores() {
@@ -51,10 +59,14 @@ public class MainActivity extends AppCompatActivity {
         textViewHighscore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, HighscoreActivity.class);
-                startActivity(i);
+                startHighscoreActivity();
             }
         });
+    }
+
+    private void startHighscoreActivity() {
+        Intent i = new Intent(MainActivity.this, HighscoreActivity.class);
+        startActivity(i);
     }
 
 }

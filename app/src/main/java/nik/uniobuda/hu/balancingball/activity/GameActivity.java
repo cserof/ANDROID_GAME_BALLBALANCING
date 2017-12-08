@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import nik.uniobuda.hu.balancingball.view.GameView;
 import nik.uniobuda.hu.balancingball.logic.CollisionDetector;
 import nik.uniobuda.hu.balancingball.logic.HighScoreController;
@@ -15,6 +14,11 @@ import nik.uniobuda.hu.balancingball.model.Level;
 import nik.uniobuda.hu.balancingball.util.MapState;
 import nik.uniobuda.hu.balancingball.util.XmlLevelParser;
 
+/**
+ * Created by cserof on 11/12/2017.
+ * Includes and controls the main components of the game.
+ *
+ */
 public class GameActivity extends AppCompatActivity {
 
     private GameView gameView;
@@ -36,16 +40,11 @@ public class GameActivity extends AppCompatActivity {
         String selectedLevelId = getIntent().getExtras().getString("selectedLevelId");
         xmlMapParser = new XmlLevelParser(this);
 
+        stopper = new Stopwatch();
         level = createLevel(selectedLevelId);
         ball = new Ball(level.getStartX(), level.getStartY());
         sensor = new SensorController(this, ball);
-        collisionDetector = new CollisionDetector(this, ball, level);
-        highScoreContoller = new HighScoreController(this);
-        stopper = new Stopwatch();
-        mapState = MapState.STATE0;
-        isGameLost = false;
-        isGameWon = false;
-
+        initLevel();
         gameView = new GameView(this);
         setContentView(gameView);
     }
@@ -94,10 +93,6 @@ public class GameActivity extends AppCompatActivity {
         highScoreContoller.addTime(level.getId(), stopper.getElapsedTime());
     }
 
-    public void startOrResetStopper() {
-        stopper.startOrReset();
-    }
-
     public String getFormattedElapsedTime() {
         return stopper.getFormattedElapsedTime();
     }
@@ -124,15 +119,8 @@ public class GameActivity extends AppCompatActivity {
 
     public void restart() {
         gameView.pause();
-        ball.setToStartPosition(level.getStartX(), level.getStartY());
-        stopper.startOrReset();
-        mapState = MapState.STATE0;
-        collisionDetector = new CollisionDetector(this, ball, level);
-        highScoreContoller = new HighScoreController(this);
-        setGameLost(false);
-        setGameWon(false);
+        initLevel();
         gameView.resume();
-        showLevelMessage();
     }
 
     @Override
@@ -140,8 +128,8 @@ public class GameActivity extends AppCompatActivity {
         super.onResume();
 
         gameView.resume();
-        sensor.registerSensors();
         restart();
+        sensor.registerSensors();
     }
 
     @Override
@@ -150,6 +138,17 @@ public class GameActivity extends AppCompatActivity {
 
         gameView.pause();
         sensor.unregisterSensors();
+    }
+
+    private void initLevel() {
+        collisionDetector = new CollisionDetector(this, ball, level);
+        highScoreContoller = new HighScoreController(this);
+        ball.setToStartPosition(level.getStartX(), level.getStartY());
+        mapState = MapState.STATE0;
+        isGameLost = false;
+        isGameWon = false;
+        stopper.startOrReset();
+        showLevelMessage();
     }
 
     private Level createLevel(String levelId) {
