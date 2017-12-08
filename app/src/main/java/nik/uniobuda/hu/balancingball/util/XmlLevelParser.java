@@ -128,7 +128,7 @@ public class XmlLevelParser {
     }
 
     private LevelInfo parseInfo(XmlResourceParser xrp) throws XmlPullParserException, IOException {
-        String id =  xrp.getAttributeValue(null, "id");
+        String id =  xrp.getAttributeValue(null, "levelId");
         String levelName = xrp.getAttributeValue(null, "name");
 
         LevelInfo lvlInfo = new LevelInfo(id, levelName);

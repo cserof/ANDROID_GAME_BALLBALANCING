@@ -40,7 +40,7 @@ public class LevelsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LevelInfo selected = (LevelInfo) adapter.getItem(position);
-                openSelectedLevel(selected.getId());
+                openSelectedLevel(selected.getLevelId());
             }
         });
     }

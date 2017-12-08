@@ -6,6 +6,9 @@ package nik.uniobuda.hu.balancingball.util;
 
 public class TimeFormatter {
 
+    /*** elapsedTime parameter : time interval in milliseconds
+     * Return the same times in mm:ss:ff format (ff :  hundredths of a second)
+     **/
     public static String formatTime(long elapsedTime) {
         String min = twoDigitFormat(String.valueOf(elapsedTime / 60000));
         String sec = twoDigitFormat(String.valueOf((elapsedTime / 1000) % 60));

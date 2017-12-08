@@ -1,8 +1,8 @@
 <levels>
-    <level id="lvl1" name="Level 1"></level>
-    <level id="lvl2" name="Level 2"></level>
-    <level id="lvl3" name="Level 3"></level>
-    <level id="lvl4" name="Level 4"></level>
-    <level id="lvl5" name="Level 5"></level>
-    <level id="lvl6" name="Level 6"></level>
+    <level levelId="lvl1" name="Level 1"></level>
+    <level levelId="lvl2" name="Level 2"></level>
+    <level levelId="lvl3" name="Level 3"></level>
+    <level levelId="lvl4" name="Level 4"></level>
+    <level levelId="lvl5" name="Level 5"></level>
+    <level levelId="lvl6" name="Level 6"></level>
 </levels>

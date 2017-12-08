@@ -6,6 +6,7 @@ import nik.uniobuda.hu.balancingball.R;
 
 /**
  * Created by cserof on 12/5/2017.
+ * Gets applied colors from xml and handles them
  */
 
 public class Palette {

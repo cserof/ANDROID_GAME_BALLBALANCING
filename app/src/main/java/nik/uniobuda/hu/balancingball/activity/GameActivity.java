@@ -17,7 +17,6 @@ import nik.uniobuda.hu.balancingball.util.XmlLevelParser;
 /**
  * Created by cserof on 11/12/2017.
  * Includes and controls the main components of the game.
- *
  */
 public class GameActivity extends AppCompatActivity {
 

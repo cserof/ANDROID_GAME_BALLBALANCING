@@ -22,6 +22,7 @@ import nik.uniobuda.hu.balancingball.util.TimeFormatter;
 
 /**
  * Created by cserof on 11/25/2017.
+ *
  */
 
 public class HighScoreController {
@@ -34,18 +35,7 @@ public class HighScoreController {
         initHighScores();
     }
 
-    /*
-    public List<Highscore> getHighScores() {
-        ArrayList<Highscore> list = new ArrayList<Highscore>();
-        Iterator it = highScores.entrySet().iterator();
-        while (it.hasNext()) {
-            HashMap.Entry<String, Highscore> pair = (HashMap.Entry<String, Highscore>)it.next();
-            list.add(pair.getValue());
-            it.remove();
-        }
-        return list;
-    }
-*/
+    //
     public void addTime(String levelId, long time) {
         if (!highScores.containsKey(levelId)) {
             highScores.put(levelId, new Highscore(levelId, time));
@@ -59,7 +49,24 @@ public class HighScoreController {
         }
     }
 
+    public String getFormattedBestTime(String id) {
+        long time;
+        if (highScores.containsKey(id)) {
+            time = highScores.get(id).getBestTime();
+        }
+        else {
+            time = 0;
+        }
+        return TimeFormatter.formatTime(time);
+    }
+
+    //source:
     //https://www.ibm.com/developerworks/xml/library/x-android/
+    //example:
+    //<highScores>
+    //<highScore id="lvl1" bestTime="12347"></highScore>
+    //<highScore id="lvl2" bestTime="23456"></highScore>
+    //</highScores>
     private String writeToXml() {
         XmlSerializer serializer = Xml.newSerializer();
         StringWriter writer = new StringWriter();
@@ -153,16 +160,5 @@ public class HighScoreController {
             e.printStackTrace();
         }
         return sb.toString();
-    }
-
-    public String getFormattedBestTime(String id) {
-        long time;
-        if (highScores.containsKey(id)) {
-            time = highScores.get(id).getBestTime();
-        }
-        else {
-            time = 0;
-        }
-        return TimeFormatter.formatTime(time);
     }
 }

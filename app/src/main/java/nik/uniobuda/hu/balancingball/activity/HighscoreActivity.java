@@ -48,7 +48,7 @@ public class HighscoreActivity extends AppCompatActivity {
                     level.getName() +
                             padding.toString() +
                             " - " +
-                            highScoreContoller.getFormattedBestTime(level.getId())
+                            highScoreContoller.getFormattedBestTime(level.getLevelId())
             );
         }
     }

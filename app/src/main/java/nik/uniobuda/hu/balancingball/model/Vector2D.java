@@ -2,6 +2,7 @@ package nik.uniobuda.hu.balancingball.model;
 
 /**
  * Created by cserof on 10/23/2017.
+ * Representing 2D vectors in the plane of the screen
  */
 
 public class Vector2D {

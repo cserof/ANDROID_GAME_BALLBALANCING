@@ -2,6 +2,7 @@ package nik.uniobuda.hu.balancingball.model;
 
 /**
  * Created by cserof on 11/25/2017.
+ * Model of best times for a specific level.
  */
 
 public class Highscore {

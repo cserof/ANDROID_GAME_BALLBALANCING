@@ -4,6 +4,8 @@ import nik.uniobuda.hu.balancingball.util.MapElementType;
 
 /**
  * Created by cserof on 11/15/2017.
+ * Model of the map's elements and their positions.
+ * (0,0)-point is the upper left corner
  */
 
 public class MapElement {

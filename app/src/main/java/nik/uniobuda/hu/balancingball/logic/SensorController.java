@@ -13,8 +13,11 @@ import static android.content.Context.SENSOR_SERVICE;
 
 /**
  * Created by cserof on 11/15/2017.
+ * Gets orientation (azimuth, pitch and roll of the device) based on
+ * ACCELEROMETER, MAGNETIC_FIELD sensors and forwards it to Ball.
  * source:
  * https://stackoverflow.com/questions/20339942/get-device-angle-by-using-getorientation-function
+ * https://developer.android.com/reference/android/hardware/SensorManager.html#getOrientation(float[], float[])
  */
 
 public class SensorController {
