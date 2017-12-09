@@ -2,13 +2,15 @@ package nik.uniobuda.hu.balancingball.util;
 
 /**
  * Created by cserof on 12/5/2017.
+ * formats a given time to mm:ss:ff format (ff :  hundredths of a second)
  */
-
 public class TimeFormatter {
 
-    /*** elapsedTime parameter : time interval in milliseconds
-     * Return the same times in mm:ss:ff format (ff :  hundredths of a second)
-     **/
+    /**
+     * Formats a given time in ms to mm:ss:ff String format
+     * @param   elapsedTime   time interval in milliseconds
+     * @return same times in mm:ss:ff format (ff :  hundredths of a second)
+     */
     public static String formatTime(long elapsedTime) {
         String min = twoDigitFormat(String.valueOf(elapsedTime / 60000));
         String sec = twoDigitFormat(String.valueOf((elapsedTime / 1000) % 60));

@@ -30,6 +30,9 @@ public class GameActivity extends AppCompatActivity {
     private boolean isGameLost;
     private boolean isGameWon;
     private XmlLevelParser xmlMapParser;
+
+    // Shows the actual state of the game.
+    // A mapElement is represented in the game when its state is equals the actual state of the game.
     private MapState mapState;
 
     @Override

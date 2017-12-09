@@ -20,7 +20,7 @@ import nik.uniobuda.hu.balancingball.util.XmlLevelParser;
 public class HighscoreActivity extends AppCompatActivity {
 
     private List<LevelInfo> levelInfos;
-    private List<String> highscoreListItems = new ArrayList<String>();
+    private List<String> highscoreListItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +30,18 @@ public class HighscoreActivity extends AppCompatActivity {
         initLevelInfos();
         getHighScores();
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.listitem_highscores, highscoreListItems);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.listitem_highscores, highscoreListItems);
         ListView list = (ListView) findViewById(R.id.listviewhighscores);
         list.setAdapter(adapter);
     }
 
+    /**
+     / Opens highscores from internal storage, formats and add them to highscoreListItems
+     / Padding the formatted times in order to the rows be equal length
+     */
     private void getHighScores() {
         int maxLength = getLevelNameMaxLength();
-        HighScoreController highScoreContoller = new HighScoreController(this);
+        HighScoreController highScoreController = new HighScoreController(this);
         for (LevelInfo level : levelInfos) {
             int nameLength = maxLength - level.getName().length();
             StringBuilder padding = new StringBuilder();
@@ -48,11 +52,15 @@ public class HighscoreActivity extends AppCompatActivity {
                     level.getName() +
                             padding.toString() +
                             " - " +
-                            highScoreContoller.getFormattedBestTime(level.getLevelId())
+                            highScoreController.getFormattedBestTime(level.getLevelId())
             );
         }
     }
 
+    /**
+     * Returns the highest length of the levelnames from levelInfos list.
+     * @return the highest length of the levelnames from levelInfos list.
+     */
     private int getLevelNameMaxLength() {
         int max = 0;
         for (LevelInfo level : levelInfos) {

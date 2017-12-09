@@ -5,8 +5,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
-
 import nik.uniobuda.hu.balancingball.model.Ball;
 
 import static android.content.Context.SENSOR_SERVICE;

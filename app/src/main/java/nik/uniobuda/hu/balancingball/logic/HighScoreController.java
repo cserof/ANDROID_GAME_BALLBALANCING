@@ -35,7 +35,13 @@ public class HighScoreController {
         initHighScores();
     }
 
-    //
+    /**
+     * Checks whether a time is the better on a specified level then the actual best.
+     * If it is then save it to xml.
+     * If there is no such levelId yet then creates it and also add its time.
+     * @param   levelId   The id whose time in the highscores is tested
+     * @param   time   the time to be checked
+     */
     public void addTime(String levelId, long time) {
         if (!highScores.containsKey(levelId)) {
             highScores.put(levelId, new Highscore(levelId, time));
@@ -49,6 +55,11 @@ public class HighScoreController {
         }
     }
 
+    /**
+     *  Returns the best time on a specific level in mm:ss:ff format (ff :  hundredths of a second)
+     * @param   id   levelId
+     * @return the best on a specific level in mm:ss:ff format (ff :  hundredths of a second)
+     */
     public String getFormattedBestTime(String id) {
         long time;
         if (highScores.containsKey(id)) {
@@ -94,6 +105,11 @@ public class HighScoreController {
         return writer.toString();
     }
 
+     /**
+     * Saves a given xml file to internal storage.
+     * No additional permission required.
+     * @param   xml   xml text to be saved
+     */
     private void saveRecordsToFile(String xml) {
         try {
             FileOutputStream fos = context.openFileOutput("highScores", context.MODE_PRIVATE);
@@ -106,13 +122,17 @@ public class HighScoreController {
         }
     }
 
-
     private void initHighScores() {
-        highScores = new HashMap<String, Highscore>();
+        highScores = new HashMap<>();
         String file = openHighScoresFromFile();
         parseHighScores(file);
     }
 
+
+    /**
+     *
+     * @param file
+     */
     private void parseHighScores(String file) {
         try {
             XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
@@ -137,12 +157,22 @@ public class HighScoreController {
         }
     }
 
+    /**
+     *
+     * @param parser
+     * @return
+     */
     private Highscore parseHighscore(XmlPullParser parser) {
         String id =  parser.getAttributeValue(null, "id");
         long bestTime = Long.parseLong(parser.getAttributeValue(null, "bestTime"));
         return new Highscore(id, bestTime);
     }
 
+
+    /**
+     *
+     * @return
+     */
     private String openHighScoresFromFile() {
         StringBuilder sb = new StringBuilder();
         try {

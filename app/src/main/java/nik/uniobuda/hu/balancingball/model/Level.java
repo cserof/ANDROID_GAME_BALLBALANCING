@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Created by cserof on 11/15/2017.
+ * Model of a level to represent data describing the map and necessary information to handle levels of the game.
  */
 
 public class Level {

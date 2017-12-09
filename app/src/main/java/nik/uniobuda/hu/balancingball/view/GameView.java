@@ -29,8 +29,10 @@ import nik.uniobuda.hu.balancingball.util.Palette;
 
 public class GameView extends SurfaceView implements Runnable {
 
-    // 1 game period interval in ms
-    // fps = 1000/gameCycLePeriod
+    /**
+    * 1 game period interval in ms
+    * fps = 1000/gameCycLePeriod
+     */
     private static final long gameCyclePeriod = 40;
 
     private GameActivity gameContext;
@@ -42,23 +44,29 @@ public class GameView extends SurfaceView implements Runnable {
     private Paint fillPaint;
     private Paint strokePaint;
 
-    //rectangle with the exact size the elapsed time text
-    //helps to position it
-    //inverse coordinates - it's increasing to the top
+    /**
+    * rectangle with the exact size the elapsed time text
+    * helps to position it
+    * inverse coordinates - it's increasing to the top
+     */
     private Rect timerTextBounds;
 
     private int viewHeight;
     private int viewWidth;
 
-    //ratio of view size and the size of the map
-    //it's used to scale down the objects of the map
-    //smaller one from ratio of heights or widths
-    //it ensures to fit any screen
+    /**
+    * ratio of view size and the size of the map
+    * it's used to scale down the objects of the map
+    * smaller one from ratio of heights or widths
+    * it ensures to fit any screen
+     */
     private float scale;
     private float horizontalOffset;
     private float verticalOffset;
 
-    //gets applied colors from xml and store them
+    /**
+    * gets applied colors from xml and store them
+     */
     private Palette palette;
 
     public GameView(Context context) {
@@ -146,10 +154,12 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
 
-    //Calculates the ratio of view size and the size of the map
-    //it's used to scale down the objects of the map
-    //smaller one from ratio of heights or widths
-    //it ensures to fit any screen
+    /**
+    * Calculates the ratio of view size and the size of the map
+    * it's used to scale down the objects of the map
+    * smaller one from ratio of heights or widths
+    * it ensures to fit any screen
+     */
     private void calcScale(int w, int h) {
         float mapWidth = gameContext.getLevel().getWidth();
         float mapHeight = gameContext.getLevel().getHeight();
@@ -200,6 +210,9 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    /**
+    * Draws the elapsed time in mm:ss:ff format to the very top left corner of the view
+     */
     private void drawElapsedTime() {
         String caption = gameContext.getFormattedElapsedTime();
         float fontsize = 24; // sp
@@ -211,7 +224,9 @@ public class GameView extends SurfaceView implements Runnable {
         canvas.drawText(caption, 0, offset, fillPaint);
     }
 
-    //drawing the ball inculuding dots
+    /**
+    * Drawing the ball inculuding dots
+     */
     private void drawMovingObjects() {
         float drawnX = gameContext.getBall().getPositionX()*scale + horizontalOffset;
         float drawnY = gameContext.getBall().getPositionY()*scale + verticalOffset;
@@ -242,8 +257,10 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    //draws the elements of the map
-    //mapState indenpendent ones and ones with mapState equals to the actual state of the game
+    /**
+    * Draws the elements of the map.
+    * mapState indenpendent ones and ones with mapState equals to the actual state of the game
+     */
     private void drawLevelBackground() {
         for (MapElement element : gameContext.getLevel().getMapElements()) {
             if (
@@ -283,7 +300,9 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    //draws the message parameter into the center of the screen
+    /**
+    * Draws the message parameter into the center of the screen
+     */
     private void drawEndGameMessage(String message) {
         fillPaint.setColor(palette.getColorText());
         fillPaint.setTextSize(viewHeight/12);

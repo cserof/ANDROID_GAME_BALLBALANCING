@@ -6,7 +6,14 @@ package nik.uniobuda.hu.balancingball.util;
 
 public class MatrixOperations {
 
-    //http://planning.cs.uiuc.edu/node102.html
+    /**
+     *  Returns a rotation matrix dependending on the given 3 axis rotation
+     *  source - http://planning.cs.uiuc.edu/node102.html
+     * @param   x yaw rotation in radian
+     * @param   y pitch rotations in radian
+     * @param   z roll rotation in radian
+     * @return a rotation matrix dependending on the given 3 axis rotation
+     */
     public static double[][] calculateRotationMatrix(double x, double y, double z) {
         double[][] m = {
                 {Math.cos(y)*Math.cos(z),    Math.sin(x)*Math.sin(y)*Math.cos(z)-Math.cos(x)*Math.sin(z),    Math.sin(x)*Math.sin(z)+Math.cos(x)*Math.sin(y)*Math.cos(z)    },

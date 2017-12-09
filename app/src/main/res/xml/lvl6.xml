@@ -1,7 +1,7 @@
 <level>
     <id>lvl6</id>
     <levelMsg>"Tap! Tap!"</levelMsg>
-    <nextLevelId>gameCompleted</nextLevelId>
+    <nextLevelId>lvl7</nextLevelId>
     <startX>562.5</startX>
     <startY>225</startY>
     <width>1125</width>

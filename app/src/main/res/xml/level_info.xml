@@ -5,4 +5,5 @@
     <level levelId="lvl4" name="Level 4"></level>
     <level levelId="lvl5" name="Level 5"></level>
     <level levelId="lvl6" name="Level 6"></level>
+    <level levelId="lvl7" name="Level 7"></level>
 </levels>

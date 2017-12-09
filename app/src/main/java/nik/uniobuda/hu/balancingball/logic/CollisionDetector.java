@@ -15,15 +15,20 @@ import nik.uniobuda.hu.balancingball.model.StateDependentElement;
 
 public class CollisionDetector {
 
+    private GameActivity gameContext;
     private Ball ball;
     private Level lvl;
 
+    /**
+    * True if there were collision and the ball is still overlapping the wall
+    */
     private boolean justCollided;
 
-    //if there were collision it contains the reference of the wall
-    // it helps to check whether the ball is still overlapping the wall
+    /**
+     * If there were collision it contains the reference of the wall
+     * it helps to check whether the ball is still overlapping the wall
+     */
     private MapElement lastCollisionObject;
-    private GameActivity gameContext;
 
     public CollisionDetector(Context context, Ball ball, Level level) {
         this.gameContext = (GameActivity) context;
@@ -37,8 +42,10 @@ public class CollisionDetector {
         return justCollided;
     }
 
-    // if there were collision and the ball is still overlapping the wall
-    // there is no another collision detection
+    /**
+     * If there were collision and the ball is still overlapping the wall
+     * there is no another collision detection
+     */
     public void detect() {
         if (isJustCollided()) {
             if (!isCollided(lastCollisionObject)) {
@@ -50,6 +57,10 @@ public class CollisionDetector {
         }
     }
 
+    /**
+    / Iterates through all the map elements and checks their positions reference to the ball
+     / Except ones whose mapState doesn't match the actual state of the game.
+     */
     private void iterateElementsToDetect() {
         for (MapElement element : lvl.getMapElements()) {
             if (!(element instanceof StateDependentElement) ||
@@ -73,9 +84,14 @@ public class CollisionDetector {
         }
     }
 
-    //if the wall is damaging isGameLost is set true
-    //otherwise it bounce back - reversing the sign of the velocity vector's x or y coordinate
-    //depending on the orientation of collision
+    /**
+     * If the wall is damaging isGameLost is set true
+     * otherwise it bounce back - reversing the sign of the velocity vector's x or y coordinate
+     * depending on the orientation of collision
+     *
+     * @param   element   the element ball has collided to
+     *                    helps determine the direction of bounding
+     */
     private void collisionOnWall(MapElement element) {
         justCollided = true;
         lastCollisionObject = element;
@@ -96,6 +112,12 @@ public class CollisionDetector {
         }
     }
 
+    /**
+     * Returns true if ball and the element parameter is intersecting each other
+     *
+     * @param   element   The element object whose intersection with the ball is to be tested
+     * @return Returns true if ball and the element parameter is intersecting each other
+     */
     private boolean isCollided(MapElement element) {
         float ballX = ball.getPositionX();
         float ballY = ball.getPositionY();
@@ -107,8 +129,14 @@ public class CollisionDetector {
                 element.getBottom() >= ballY - ballRadius;
     }
 
-    //ball and the element parameter is overlapping at least
-    //the portion of overlapForWinning
+    /**
+     * Returns true if ball and the element parameter is overlapping at least
+     * the portion of overlapForWinning
+     *
+     * @param   element   The element object whose overlapping to the ball is to be tested
+     * @return true if ball and the element parameter is overlapping at least
+     * the portion of overlapForWinning
+     */
     private boolean isIncluded(MapElement element) {
         float ballX = ball.getPositionX();
         float ballY = ball.getPositionY();

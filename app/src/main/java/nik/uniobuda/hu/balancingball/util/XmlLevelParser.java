@@ -21,7 +21,8 @@ import static nik.uniobuda.hu.balancingball.util.MapElementType.WALL;
 
 /**
  * Created by cserof on 11/16/2017.
- * xml parsing:
+ * Reading Level and LevelInfo xml files and creating equivalent game objects.
+ * xml parsing with XmlPullParser based on:
  * https://www.ibm.com/developerworks/xml/library/x-android/
  */
 
@@ -50,7 +51,6 @@ public class XmlLevelParser {
         try {
             lvl = xmlParsingLevel(selectedLevelId);
         } catch (XmlPullParserException e) {
-            //todo szint nem elérhető hibát adni usernek
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,6 +58,13 @@ public class XmlLevelParser {
         return lvl;
     }
 
+    /**
+     * Reads a specific xml resource of a map and creates the Level object
+     * @param selectedLevelId level to be parsed - the name of the xml resource must be the same
+     * @return Level object equivalent to the parsed xml
+     * @throws XmlPullParserException
+     * @throws IOException
+     */
     private Level xmlParsingLevel(String selectedLevelId) throws XmlPullParserException, IOException {
         int resourceId = context.getResources().getIdentifier(selectedLevelId, "xml", context.getPackageName());
         XmlResourceParser xrp = context.getResources().getXml(resourceId);
@@ -105,15 +112,21 @@ public class XmlLevelParser {
             }
             eventType = xrp.next();
         }
-        Level lvl = new Level(id, levelMsg, nextLevelId, mapElements, startX, startY, width, height);
-        return lvl;
+        return new Level(id, levelMsg, nextLevelId, mapElements, startX, startY, width, height);
     }
 
+    /**
+     * Reads xml resource of level descriptions from resource "level_info.xml" and creates a list of LevelInfo objects.
+     * containing information about all the levels.
+     * @return List of LevelInfo objects containing information about all the levels (ids and names).
+     * @throws XmlPullParserException
+     * @throws IOException
+     */
     private List<LevelInfo> xmlParsingLevelInfos() throws XmlPullParserException, IOException {
         XmlResourceParser xrp = context.getResources().getXml(R.xml.level_info);
         int eventType = xrp.getEventType();
 
-        List<LevelInfo> levelInfos = new ArrayList<LevelInfo>();
+        List<LevelInfo> levelInfos = new ArrayList<>();
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
@@ -127,14 +140,27 @@ public class XmlLevelParser {
         return levelInfos;
     }
 
+    /**
+     * Parse a Level item of level_info.xml and creates the equivalent LevelInfo object.
+     * @param xrp PullParser reference - actual state of the parsing process
+     * @return LevelInfo object containing information about a specific level (ids and names).
+     * @throws XmlPullParserException
+     * @throws IOException
+     */
     private LevelInfo parseInfo(XmlResourceParser xrp) throws XmlPullParserException, IOException {
         String id =  xrp.getAttributeValue(null, "levelId");
         String levelName = xrp.getAttributeValue(null, "name");
 
-        LevelInfo lvlInfo = new LevelInfo(id, levelName);
-        return lvlInfo;
+        return new LevelInfo(id, levelName);
     }
 
+    /**
+     *
+     * @param xrp PullParser reference - actual state of the parsing process
+     * @return
+     * @throws XmlPullParserException
+     * @throws IOException
+     */
     private ArrayList<MapElement> parseLevelElements(XmlResourceParser xrp) throws XmlPullParserException, IOException {
         ArrayList<MapElement> mapElements = new ArrayList<>();
         int eventType = xrp.getEventType();
@@ -159,6 +185,11 @@ public class XmlLevelParser {
         return mapElements;
     }
 
+    /**
+     *
+     * @param xrp PullParser reference - actual state of the parsing process
+     * @return
+     */
     private MapElement parseStateIndependentElement(XmlResourceParser xrp) {
         float left = Float.parseFloat(xrp.getAttributeValue(null, "left"));
         float top = Float.parseFloat(xrp.getAttributeValue(null, "top"));
@@ -184,6 +215,11 @@ public class XmlLevelParser {
         return new MapElement(left,top,right, bottom,mt, isDamage);
     }
 
+    /**
+     *
+     * @param xrp PullParser reference - actual state of the parsing process
+     * @return
+     */
     private StateDependentElement parseStateDependentElement(XmlResourceParser xrp) {
         float left = Float.parseFloat(xrp.getAttributeValue(null, "left"));
         float top = Float.parseFloat(xrp.getAttributeValue(null, "top"));
